@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "929083905428",
+    "project_id": "todocasa-a1c9f",
+    "storage_bucket": "todocasa-a1c9f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929083905428:android:e5a2ac96fb92506f7ceb81",
+        "android_client_info": {
+          "package_name": "com.todocasa.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3LyVnBVD8KcdQx13vYSOeTsKqVXNo13o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

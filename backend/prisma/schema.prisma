@@ -1,0 +1,238 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  email        String   @unique
+  password     String
+  telefono     String?
+  direccion    String?
+  lat          Float?
+  lng          Float?
+  rol          Rol      @default(CLIENTE)
+
+  profesional  Profesional?
+  trabajos     Trabajo[] @relation("ClienteTrabajos")
+  valoracionesComoCliente Valoracion[] @relation("ValoracionesCliente")
+  valoracionesRecibidas   Valoracion[] @relation("ValoracionesProfesional")
+
+  suscripcion  Suscripcion?
+  refreshTokenHash String?
+
+  chatsComoCliente     Chat[] @relation("ChatCliente")
+  chatsComoProfesional Chat[] @relation("ChatProfesional")
+
+  mensajesEnviados     Mensaje[] @relation("MensajesEnviados")
+  mensajesRecibidos    Mensaje[] @relation("MensajesRecibidos")
+
+  notificaciones Notificacion[]
+  pagos          Pago[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  verificado     Boolean       @default(false)
+  verificacion   Verificacion?
+}
+
+model Profesional {
+  idUsuario     Int        @id
+  usuario       Usuario    @relation(fields: [idUsuario], references: [id])
+  descripcion   String?
+  valorHora     Float
+  extraUrgencia Float      @default(1.5)
+
+  ofertas       Oferta[]
+  especialidades Especialidad[]
+}
+
+model Especialidad {
+  id             Int           @id @default(autoincrement())
+  nombre         String        @unique
+  categoria      String?
+  activa         Boolean       @default(true)
+  profesionales  Profesional[]
+}
+
+model Suscripcion {
+  id          Int       @id @default(autoincrement())
+  usuarioId   Int       @unique
+  nivel       NivelSuscripcion
+  activa      Boolean   @default(true)
+  fechaInicio DateTime  @default(now())
+  fechaFin    DateTime?
+
+  usuario     Usuario   @relation(fields: [usuarioId], references: [id])
+}
+
+model Trabajo {
+  id          Int      @id @default(autoincrement())
+  clienteId   Int
+  titulo      String
+  descripcion String
+  categoria   String?
+  rangoMin    Float
+  rangoMax    Float
+  urgente     Boolean   @default(false)
+  estado      EstadoTrabajo @default(PENDIENTE)
+  creadoEn    DateTime  @default(now())
+  expiraEn    DateTime?
+  fechaFin    DateTime?
+  fechaAcordada DateTime?
+  direccion   String?
+
+  lat         Float?
+  lng         Float?
+  radioKm     Float?    @default(10)
+
+
+  cliente     Usuario   @relation("ClienteTrabajos", fields: [clienteId], references: [id])
+  ofertas     Oferta[]
+  valoracion  Valoracion?
+  chat        Chat?
+}
+
+model Oferta {
+  id             Int      @id @default(autoincrement())
+  trabajoId      Int
+  profesionalId  Int
+  monto          Float
+  creadaEn       DateTime @default(now())
+
+  trabajo        Trabajo     @relation(fields: [trabajoId], references: [id])
+  profesional    Profesional @relation(fields: [profesionalId], references: [idUsuario])
+}
+
+model Chat {
+  id             Int      @id @default(autoincrement())
+  trabajoId      Int      @unique
+  clienteId      Int
+  profesionalId  Int
+  creadoEn       DateTime @default(now())
+  actualizadoEn  DateTime @updatedAt
+  archivadoCliente     Boolean  @default(false)
+  archivadoProfesional Boolean  @default(false)
+
+  cliente        Usuario  @relation("ChatCliente", fields: [clienteId], references: [id])
+  profesional    Usuario  @relation("ChatProfesional", fields: [profesionalId], references: [id])
+  trabajo        Trabajo  @relation(fields: [trabajoId], references: [id])
+
+  mensajes       Mensaje[]
+}
+
+model Mensaje {
+  id             Int      @id @default(autoincrement())
+  chatId         Int
+  remitenteId    Int
+  destinatarioId Int
+  contenido      String
+  leido          Boolean  @default(false)
+  enviadoEn      DateTime @default(now())
+
+  chat            Chat     @relation(fields: [chatId], references: [id])
+  remitenteUser   Usuario @relation("MensajesEnviados", fields: [remitenteId], references: [id])
+  destinatarioUser Usuario @relation("MensajesRecibidos", fields: [destinatarioId], references: [id])
+}
+
+model Valoracion {
+  id             Int      @id @default(autoincrement())
+  clienteId      Int
+  profesionalId  Int
+  trabajoId      Int @unique
+  puntaje        Int
+  comentario     String?
+  creadaEn       DateTime @default(now())
+
+  cliente        Usuario  @relation("ValoracionesCliente", fields: [clienteId], references: [id])
+  profesional    Usuario  @relation("ValoracionesProfesional", fields: [profesionalId], references: [id])
+  trabajo        Trabajo  @relation(fields: [trabajoId], references: [id])
+}
+
+model Notificacion {
+  id        Int      @id @default(autoincrement())
+  usuarioId Int
+  tipo      TipoNotificacion
+  mensaje   String
+  leida     Boolean  @default(false)
+  creadaEn  DateTime @default(now())
+
+  trabajoId Int?
+
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+}
+
+model Pago {
+  id           Int      @id @default(autoincrement())
+  usuarioId    Int
+  monto        Float
+  descripcion  String
+  estado       EstadoPago @default(PENDIENTE)
+  metodo       String?
+  referenciaMP String?
+  creadoEn     DateTime @default(now())
+  tipo          TipoPago
+
+  usuario      Usuario  @relation(fields: [usuarioId], references: [id])
+}
+
+model Verificacion {
+  id            Int      @id @default(autoincrement())
+  usuarioId     Int      @unique
+  estado        EstadoVerificacion @default(PENDIENTE)
+  comprobante   String?
+  verificadaEn  DateTime?
+  creadaEn      DateTime @default(now())
+
+  usuario       Usuario  @relation(fields: [usuarioId], references: [id])
+}
+
+enum Rol {
+  CLIENTE
+  PROFESIONAL
+  ADMIN
+}
+
+enum NivelSuscripcion {
+  BASICO
+  PREMIUM
+}
+
+enum EstadoTrabajo {
+  PENDIENTE
+  ASIGNADO
+  PENDIENTE_CONFIRMACION
+  FINALIZADO
+  CANCELADO
+  EN_RECLAMO
+}
+
+enum EstadoPago {
+  PENDIENTE
+  COMPLETADO
+  FALLIDO
+}
+
+enum EstadoVerificacion {
+  PENDIENTE
+  APROBADA
+  RECHAZADA
+}
+
+enum TipoNotificacion {
+  OFERTA_ACEPTADA
+  NUEVO_MENSAJE
+  TRABAJO_FINALIZADO
+  SUSCRIPCION_POR_VENCER
+}
+
+enum TipoPago {
+  SUSCRIPCION
+  VERIFICACION
+}

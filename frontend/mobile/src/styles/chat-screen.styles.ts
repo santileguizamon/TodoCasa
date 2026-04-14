@@ -1,0 +1,252 @@
+import { StyleSheet } from "react-native";
+import { RADIUS, SPACING } from "../theme";
+
+export const chatScreenStyles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: "#EAF2FF",
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: SPACING.lg,
+    paddingTop: 12,
+    paddingBottom: 10,
+  },
+  loader: {
+    marginTop: 40,
+  },
+  topHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 10,
+  },
+  headerAvatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#DCEBFF",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#BFD8FF",
+  },
+  headerAvatarText: {
+    fontWeight: "800",
+    color: "#1E3A8A",
+  },
+  headerInfo: {
+    flex: 1,
+  },
+  headerName: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#0F172A",
+  },
+  headerRole: {
+    marginTop: 2,
+    fontSize: 12,
+    color: "#64748B",
+    fontWeight: "600",
+  },
+  statusCard: {
+    marginBottom: 8,
+    borderRadius: 12,
+    padding: 10,
+    borderWidth: 1,
+    backgroundColor: "#EAF2FF",
+    borderColor: "#BFD8FF",
+  },
+  statusText: {
+    textAlign: "center",
+    fontWeight: "700",
+    color: "#1E3A8A",
+  },
+  actionButton: {
+    marginBottom: 8,
+    backgroundColor: "#2563EB",
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  actionButtonText: {
+    color: "#FFFFFF",
+    fontWeight: "800",
+  },
+  successCard: {
+    padding: 12,
+    marginBottom: 8,
+    borderRadius: 12,
+    backgroundColor: "#E6F4EA",
+    borderWidth: 1,
+    borderColor: "#22C55E",
+  },
+  successText: {
+    fontWeight: "800",
+    color: "#166534",
+    textAlign: "center",
+  },
+  warningButton: {
+    marginTop: 10,
+    backgroundColor: "#F59E0B",
+    paddingVertical: 10,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  warningButtonText: {
+    textAlign: "center",
+    fontWeight: "800",
+    color: "#1F2937",
+  },
+  neutralCard: {
+    padding: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderRadius: 12,
+    backgroundColor: "#F5F7FB",
+    borderColor: "#D7DEE9",
+  },
+  successButton: {
+    backgroundColor: "#22C55E",
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  successButtonText: {
+    color: "#FFFFFF",
+    textAlign: "center",
+    fontWeight: "800",
+  },
+  list: {
+    flex: 1,
+  },
+  messageBubble: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 22,
+    marginVertical: 6,
+    maxWidth: "80%",
+  },
+  messageMine: {
+    alignSelf: "flex-end",
+    backgroundColor: "#2563EB",
+  },
+  messageOther: {
+    alignSelf: "flex-start",
+    backgroundColor: "#E6F0FF",
+    borderWidth: 1,
+    borderColor: "#BFD4F8",
+  },
+  messageTextMine: {
+    color: "#FFFFFF",
+    fontSize: 15,
+  },
+  messageTextOther: {
+    color: "#0F172A",
+    fontSize: 15,
+  },
+  inputRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 8,
+    gap: 8,
+  },
+  input: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: "#D6E2F5",
+    color: "#0F172A",
+  },
+  sendButton: {
+    backgroundColor: "#2563EB",
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 24,
+  },
+  sendButtonDisabled: {
+    backgroundColor: "#94A3B8",
+  },
+  sendButtonText: {
+    color: "#FFFFFF",
+    fontWeight: "800",
+  },
+  closedText: {
+    marginTop: 12,
+    textAlign: "center",
+    color: "#64748B",
+    fontStyle: "italic",
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    padding: 20,
+  },
+  modalCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: RADIUS.md,
+    padding: 16,
+  },
+  modalTitle: {
+    fontWeight: "800",
+    marginBottom: 10,
+    textAlign: "center",
+    color: "#0F172A",
+  },
+  dateSummary: {
+    marginTop: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#D6E2F5",
+    backgroundColor: "#F8FAFF",
+    padding: 12,
+  },
+  dateSummaryLabel: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.4,
+  },
+  dateSummaryValue: {
+    marginTop: 6,
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#0F172A",
+  },
+  changeDateButton: {
+    marginTop: 10,
+    backgroundColor: "#E6F0FF",
+    borderWidth: 1,
+    borderColor: "#C6DBFF",
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  changeDateButtonText: {
+    color: "#1E3A8A",
+    fontWeight: "800",
+  },
+  modalPrimaryButton: {
+    marginTop: 12,
+    backgroundColor: "#22C55E",
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalPrimaryText: {
+    color: "#FFFFFF",
+    fontWeight: "800",
+  },
+  modalSecondaryButton: {
+    marginTop: 8,
+  },
+  modalSecondaryText: {
+    textAlign: "center",
+    color: "#64748B",
+  },
+});

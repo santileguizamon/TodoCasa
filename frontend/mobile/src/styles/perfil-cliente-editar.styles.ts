@@ -1,0 +1,121 @@
+import { StyleSheet } from "react-native";
+import { RADIUS, SPACING } from "../theme";
+
+export const perfilClienteEditarStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#EAF2FF",
+  },
+  content: {
+    paddingTop: 30,
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: 50,
+    gap: SPACING.md,
+  },
+  heroCard: {
+    backgroundColor: "#C7DBFF",
+    borderColor: "#AFC9F9",
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 14,
+  },
+  heroKicker: {
+    fontSize: 11,
+    fontWeight: "800",
+    color: "#27538D",
+    textTransform: "uppercase",
+    letterSpacing: 0.6,
+  },
+  heroTitle: {
+    marginTop: 4,
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#0F2A52",
+  },
+  heroSubtitle: {
+    marginTop: 6,
+    color: "#365D8F",
+    lineHeight: 19,
+  },
+  sectionCard: {
+    backgroundColor: "#F7FAFF",
+    borderWidth: 1,
+    borderColor: "#D6E2F5",
+    borderRadius: RADIUS.md,
+    padding: SPACING.md,
+    shadowColor: "#2563EB",
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  sectionTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginBottom: SPACING.sm,
+  },
+  sectionTitle: {
+    color: "#173A6B",
+    fontWeight: "800",
+    fontSize: 15,
+  },
+  label: {
+    marginBottom: 6,
+    color: "#2A4E81",
+    fontWeight: "700",
+    fontSize: 13,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#C8DAF6",
+    borderRadius: RADIUS.md,
+    padding: SPACING.sm,
+    backgroundColor: "#ECF4FF",
+    color: "#0F2A52",
+  },
+  securityHint: {
+    marginBottom: 10,
+    color: "#4B6E98",
+    fontWeight: "600",
+    fontSize: 12,
+  },
+  button: {
+    marginTop: SPACING.sm,
+    backgroundColor: "#2563EB",
+    padding: SPACING.md,
+    borderRadius: RADIUS.md,
+    alignItems: "center",
+    shadowColor: "#2563EB",
+    shadowOpacity: 0.24,
+    shadowRadius: 14,
+    elevation: 5,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "700",
+  },
+  suggestionItem: {
+    marginTop: 6,
+    borderWidth: 1,
+    borderColor: "#D8E6FF",
+    borderRadius: 10,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
+  suggestionTitle: {
+    color: "#0F2A52",
+    fontWeight: "700",
+  },
+  suggestionSubtitle: {
+    marginTop: 2,
+    color: "#4B6E98",
+    fontSize: 12,
+  },
+  suggestionState: {
+    marginTop: 8,
+    color: "#4B6E98",
+    fontSize: 12,
+    fontWeight: "600",
+  },
+});
