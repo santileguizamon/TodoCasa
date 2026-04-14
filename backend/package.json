@@ -87,6 +87,11 @@
       "^src/(.*)$": "<rootDir>/$1",
       "^@/(.*)$": "<rootDir>/$1"
     },
+    "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": "./"
+    },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
