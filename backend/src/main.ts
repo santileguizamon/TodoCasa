@@ -32,7 +32,7 @@ async function bootstrap() {
   // Arranca el servidor
   const PORT = process.env.PORT || 3000;
   await app.listen(PORT);
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor corriendo en ${PORT}`);
 }
 
 bootstrap();
