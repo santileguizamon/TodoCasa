@@ -136,6 +136,21 @@ export const authStyles = StyleSheet.create({
   roleTextInactive: {
     color: "#475569",
   },
+  proNotice: {
+    marginTop: 12,
+    borderWidth: 1,
+    borderColor: "#BFDBFE",
+    backgroundColor: "#EFF6FF",
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  proNoticeText: {
+    color: "#1E3A8A",
+    fontSize: 12,
+    lineHeight: 17,
+    fontWeight: "600",
+  },
   bottomAccent: {
     marginTop: 40,
     marginHorizontal: 20,

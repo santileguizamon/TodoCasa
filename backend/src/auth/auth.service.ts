@@ -41,6 +41,7 @@ export class AuthService {
         email,
         password: hash,
         rol: rol as any,
+        activo: true,
       },
     });
 
@@ -87,6 +88,7 @@ export class AuthService {
     });
 
     if (!usuario) return null;
+    if (!usuario.activo) return null;
 
     const esValido = await bcrypt.compare(
       password,
@@ -189,6 +191,10 @@ const refreshOptions: JwtSignOptions = {
         'No existe refresh token válido',
       );
 
+    if (!usuario.activo) {
+      throw new ForbiddenException('Cuenta suspendida');
+    }
+
     const valido = await bcrypt.compare(
       refreshToken,
       usuario.refreshTokenHash,
@@ -217,6 +223,7 @@ const refreshOptions: JwtSignOptions = {
     });
 
     if (!usuario || !usuario.refreshTokenHash) return null;
+    if (!usuario.activo) return null;
 
     const valido = await bcrypt.compare(refreshToken, usuario.refreshTokenHash);
     if (!valido) return null;

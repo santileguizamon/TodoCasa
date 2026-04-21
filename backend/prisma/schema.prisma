@@ -38,6 +38,7 @@ model Usuario {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  activo        Boolean       @default(true)
   verificado     Boolean       @default(false)
   verificacion   Verificacion?
 }

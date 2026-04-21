@@ -60,6 +60,7 @@ export class UsersService {
       data: {
         ...data,
         password: hashedPassword,
+        activo: data.activo ?? true,
       },
     });
   }

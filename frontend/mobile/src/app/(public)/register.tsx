@@ -4,14 +4,11 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 import { useState } from "react";
 import { Redirect, router } from "expo-router";
-import * as WebBrowser from "expo-web-browser";
 import { useAuth } from "../../context/auth-context";
 import { register } from "../../auth/auth.service";
-import { iniciarPago } from "../../pagos/pagos.service";
 import { authStyles as s } from "../../styles/auth.styles";
 
 export default function RegisterScreen() {
@@ -47,25 +44,9 @@ export default function RegisterScreen() {
       setSubmitting(true);
 
       await register(nombre, email, password, rol);
-      const auth = await loginContext(email, password);
+      await loginContext(email, password);
 
       if (rol === "PROFESIONAL") {
-        try {
-          const pago = await iniciarPago(auth.access_token);
-
-          if (pago?.init_point) {
-            await WebBrowser.openBrowserAsync(pago.init_point);
-            router.replace("/(public)/suscripcion-pendiente" as any);
-            return;
-          }
-        } catch (paymentErr) {
-          console.error("Payment init error:", paymentErr);
-          Alert.alert(
-            "Registro completado",
-            "La cuenta profesional se creo, pero no se pudo iniciar el pago ahora. Podes regularizar la suscripcion desde tu perfil."
-          );
-        }
-
         router.replace("/(protected)/profesional" as any);
         return;
       }
@@ -163,6 +144,14 @@ export default function RegisterScreen() {
             ))}
           </View>
         </View>
+
+        {rol === "PROFESIONAL" ? (
+          <View style={s.proNotice}>
+            <Text style={s.proNoticeText}>
+              Aviso: para empezar a trabajar debes activar la suscripcion desde tu perfil.
+            </Text>
+          </View>
+        ) : null}
 
         {error ? <Text style={s.errorText}>{error}</Text> : null}
 

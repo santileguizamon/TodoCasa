@@ -21,6 +21,7 @@ export class AdminService {
         email: true,
         telefono: true,
         rol: true,
+        activo: true,
         verificado: true,
         createdAt: true,
         suscripcion: {
@@ -69,7 +70,7 @@ export class AdminService {
     return this.prisma.usuario.update({
       where: { id },
       data: {
-        verificado: false,
+        activo: false,
       },
     });
   }
@@ -82,7 +83,7 @@ export class AdminService {
     return this.prisma.usuario.update({
       where: { id },
       data: {
-        verificado: true,
+        activo: true,
       },
     });
   }

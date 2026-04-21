@@ -9,6 +9,7 @@ type UsuarioAdmin = {
   email: string
   telefono?: string
   rol: 'CLIENTE' | 'PROFESIONAL' | 'ADMIN'
+  activo?: boolean
   verificado: boolean
   suscripcion?: {
     nivel: string
@@ -74,6 +75,8 @@ export default function UsuariosAdminPage() {
     const term = search.trim().toLowerCase()
 
     return usuarios.filter((u) => {
+      const isActive = u.activo ?? true
+
       if (
         term &&
         !`${u.nombre} ${u.email}`.toLowerCase().includes(term)
@@ -81,8 +84,8 @@ export default function UsuariosAdminPage() {
         return false
       }
       if (rolFilter !== 'TODOS' && u.rol !== rolFilter) return false
-      if (estadoFilter === 'ACTIVO' && !u.verificado) return false
-      if (estadoFilter === 'SUSPENDIDO' && u.verificado) return false
+      if (estadoFilter === 'ACTIVO' && !isActive) return false
+      if (estadoFilter === 'SUSPENDIDO' && isActive) return false
 
       const pending =
         u.pagos?.[0]?.estado === 'PENDIENTE' &&
@@ -263,6 +266,7 @@ export default function UsuariosAdminPage() {
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-800">
               {paginados.map((u) => {
+                const isActive = u.activo ?? true
                 const pagoSuscripcion = u.pagos?.[0]
                 const tienePagoPendiente =
                   pagoSuscripcion?.estado === 'PENDIENTE' &&
@@ -281,17 +285,17 @@ export default function UsuariosAdminPage() {
                       <span
                         className={[
                           'inline-flex rounded-full px-2.5 py-1 text-xs font-semibold',
-                          u.verificado
+                          isActive
                             ? 'bg-emerald-100 text-emerald-700'
                             : 'bg-amber-100 text-amber-700',
                         ].join(' ')}
                       >
-                        {u.verificado ? 'Activo' : 'Suspendido'}
+                        {isActive ? 'Activo' : 'Suspendido'}
                       </span>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap items-center gap-3">
-                        {u.verificado ? (
+                        {isActive ? (
                           <button
                             onClick={() => suspender(u.id)}
                             className="text-red-600 hover:text-red-700 font-medium"
