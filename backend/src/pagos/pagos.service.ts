@@ -198,6 +198,18 @@ export class PagosService {
       throw new BadRequestException('El pago ya está confirmado');
     }
   
+    if (pago.tipo !== 'SUSCRIPCION') {
+      throw new BadRequestException(
+        'Solo se pueden confirmar manualmente pagos de suscripcion',
+      );
+    }
+
+    if (!pago.referenciaMP) {
+      throw new BadRequestException(
+        'No se puede confirmar: no existe preferencia de pago asociada',
+      );
+    }
+
     const actualizado = await this.prisma.pago.update({
       where: { id },
       data: { estado: 'COMPLETADO' },

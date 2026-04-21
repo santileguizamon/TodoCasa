@@ -5,8 +5,8 @@
     "version": "1.0.0",
 
     "extra": {
-      "EXPO_PUBLIC_API_URL": "http://10.0.2.2:3000",
-      "EXPO_PUBLIC_WS_URL": "http://10.0.2.2:3000"
+      "EXPO_PUBLIC_API_URL": "https://todocasa.onrender.com",
+      "EXPO_PUBLIC_WS_URL": "https://todocasa.onrender.com"
     },
 
     "orientation": "portrait",

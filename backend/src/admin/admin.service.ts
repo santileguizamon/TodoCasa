@@ -39,6 +39,10 @@ export class AdminService {
         pagos: {
           where: {
             tipo: 'SUSCRIPCION',
+            estado: 'PENDIENTE',
+            referenciaMP: {
+              not: null,
+            },
           },
           orderBy: {
             creadoEn: 'desc',
@@ -49,6 +53,7 @@ export class AdminService {
             estado: true,
             monto: true,
             creadoEn: true,
+            referenciaMP: true,
           },
         },
       },

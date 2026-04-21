@@ -4,6 +4,7 @@ import Constants from 'expo-constants'
 const API_URL =
   process.env.EXPO_PUBLIC_API_URL ||
   (Constants.expoConfig?.extra?.EXPO_PUBLIC_API_URL as string | undefined)
+  console.log("API_URL USADA:", API_URL);
 let refreshPromise: Promise<string | null> | null = null
 
 function headersToRecord(headers?: HeadersInit): Record<string, string> {

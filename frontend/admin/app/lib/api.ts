@@ -94,3 +94,27 @@ export async function apiFetch(
   if (res.status === 204) return null
   return res.json();
 }
+
+
+export async function login(email, password) {
+  const res = await fetch(`${API_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || 'Error en login');
+  }
+
+  // GUARDAR TOKENS
+  localStorage.setItem('token', data.access_token);
+  localStorage.setItem('refresh_token', data.refresh_token);
+  localStorage.setItem('admin-user', JSON.stringify(data.user));
+
+  return data;
+}

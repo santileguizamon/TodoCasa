@@ -19,6 +19,7 @@ type UsuarioAdmin = {
     estado: 'PENDIENTE' | 'COMPLETADO' | 'FALLIDO'
     monto: number
     creadoEn: string
+    referenciaMP?: string | null
   }>
 }
 
@@ -83,7 +84,9 @@ export default function UsuariosAdminPage() {
       if (estadoFilter === 'ACTIVO' && !u.verificado) return false
       if (estadoFilter === 'SUSPENDIDO' && u.verificado) return false
 
-      const pending = u.pagos?.[0]?.estado === 'PENDIENTE'
+      const pending =
+        u.pagos?.[0]?.estado === 'PENDIENTE' &&
+        !!u.pagos?.[0]?.referenciaMP
       const active = !!u.suscripcion?.activa
 
       if (suscripcionFilter === 'ACTIVA' && !active) return false
@@ -262,7 +265,8 @@ export default function UsuariosAdminPage() {
               {paginados.map((u) => {
                 const pagoSuscripcion = u.pagos?.[0]
                 const tienePagoPendiente =
-                  pagoSuscripcion?.estado === 'PENDIENTE'
+                  pagoSuscripcion?.estado === 'PENDIENTE' &&
+                  !!pagoSuscripcion?.referenciaMP
 
                 return (
                   <tr key={u.id} className="hover:bg-slate-50/80">
