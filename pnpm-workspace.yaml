@@ -3,3 +3,23 @@ packages:
   - frontend/admin
   - frontend/mobile
   - packages/*
+
+# pnpm 10
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@prisma/client'
+  - '@prisma/engines'
+  - bcrypt
+  - prisma
+  - sharp
+  - unrs-resolver
+
+# pnpm 11+ (Render instala la última versión con npm install -g pnpm)
+allowBuilds:
+  '@nestjs/core': true
+  '@prisma/client': true
+  '@prisma/engines': true
+  bcrypt: true
+  prisma: true
+  sharp: true
+  unrs-resolver: true
