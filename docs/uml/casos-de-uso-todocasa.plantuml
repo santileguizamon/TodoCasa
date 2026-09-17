@@ -1,0 +1,35 @@
+@startuml
+left to right direction
+
+actor Cliente
+actor Profesional
+actor Administrador
+
+rectangle "TodoCasa" {
+  usecase "Registrarse" as UC1
+  usecase "Iniciar sesión" as UC2
+  usecase "Gestionar perfil" as UC3
+  usecase "Publicar trabajo" as UC4
+  usecase "Ofertar por un trabajo" as UC5
+  usecase "Contratar profesional" as UC6
+  usecase "Chatear" as UC7
+  usecase "Realizar pago" as UC8
+  usecase "Gestionar usuarios" as UC9
+}
+
+Cliente --> UC1
+Cliente --> UC2
+Cliente --> UC3
+Cliente --> UC4
+Cliente --> UC6
+Cliente --> UC7
+Cliente --> UC8
+
+Profesional --> UC2
+Profesional --> UC3
+Profesional --> UC5
+Profesional --> UC7
+Profesional --> UC8
+
+Administrador --> UC9
+@enduml

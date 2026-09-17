@@ -1,0 +1,28 @@
+@startuml
+left to right direction
+
+actor Cliente
+actor Profesional
+actor "Sistema de Pagos" as PagoSys
+
+rectangle "Pagos" {
+  usecase "Solicitar pago" as UC1
+  usecase "Seleccionar método de pago" as UC2
+  usecase "Confirmar pago" as UC3
+  usecase "Procesar pago" as UC4
+  usecase "Recibir confirmación" as UC5
+  usecase "Consultar historial de pagos" as UC6
+}
+
+Cliente --> UC1
+Cliente --> UC2
+Cliente --> UC3
+Cliente --> UC6
+
+Profesional --> UC6
+
+UC1 ..> UC2 : incluye
+UC3 ..> UC4 : incluye
+UC4 --> PagoSys
+UC5 <-- PagoSys
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+left to right direction
+
+actor Cliente
+actor Profesional
+actor Administrador
+
+rectangle "Gestión de usuarios" {
+  usecase "Registrarse" as UC1
+  usecase "Iniciar sesión" as UC2
+  usecase "Recuperar contraseña" as UC3
+  usecase "Completar perfil" as UC4
+  usecase "Verificar identidad" as UC5
+  usecase "Actualizar datos" as UC6
+  usecase "Administrar usuarios" as UC7
+}
+
+Cliente --> UC1
+Cliente --> UC2
+Cliente --> UC3
+Cliente --> UC4
+Cliente --> UC6
+
+Profesional --> UC1
+Profesional --> UC2
+Profesional --> UC3
+Profesional --> UC4
+Profesional --> UC5
+Profesional --> UC6
+
+Administrador --> UC7
+Administrador --> UC5
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+left to right direction
+
+actor Cliente
+actor Profesional
+
+rectangle "Trabajos y ofertas" {
+  usecase "Publicar trabajo" as UC1
+  usecase "Buscar trabajos" as UC2
+  usecase "Ver detalles del trabajo" as UC3
+  usecase "Enviar oferta" as UC4
+  usecase "Aceptar oferta" as UC5
+  usecase "Rechazar oferta" as UC6
+  usecase "Asignar trabajo" as UC7
+  usecase "Calificar servicio" as UC8
+}
+
+Cliente --> UC1
+Cliente --> UC2
+Cliente --> UC3
+Cliente --> UC5
+Cliente --> UC7
+Cliente --> UC8
+
+Profesional --> UC2
+Profesional --> UC3
+Profesional --> UC4
+Profesional --> UC6
+Profesional --> UC8
+@enduml

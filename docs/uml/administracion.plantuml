@@ -1,0 +1,21 @@
+@startuml
+left to right direction
+
+actor Administrador
+
+rectangle "Administración" {
+  usecase "Gestionar usuarios" as UC1
+  usecase "Aprobar verificaciones" as UC2
+  usecase "Gestionar trabajos" as UC3
+  usecase "Revisar reportes" as UC4
+  usecase "Gestionar contenido" as UC5
+  usecase "Consultar métricas" as UC6
+}
+
+Administrador --> UC1
+Administrador --> UC2
+Administrador --> UC3
+Administrador --> UC4
+Administrador --> UC5
+Administrador --> UC6
+@enduml
