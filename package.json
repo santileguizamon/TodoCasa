@@ -28,5 +28,16 @@
 	"scripts": {
 		"dev:admin": "pnpm --filter admin dev",
 		"dev:mobile": "pnpm --filter mobile dev"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"@nestjs/core",
+			"@prisma/client",
+			"@prisma/engines",
+			"bcrypt",
+			"prisma",
+			"sharp",
+			"unrs-resolver"
+		]
 	}
 }
