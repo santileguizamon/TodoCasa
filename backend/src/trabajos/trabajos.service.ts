@@ -254,7 +254,7 @@ export class TrabajosService {
 
     const trabajo = await this.prisma.trabajo.findUnique({
       where: { id: trabajoId },
-      include: { chat: true, ofertas: { where: { aceptada: true }, take: 1 } },
+      include: { chat: true },
     });
 
     if (!trabajo) throw new NotFoundException('Trabajo no encontrado');
@@ -417,28 +417,6 @@ export class TrabajosService {
     });
   }
 
-  // 📅 Definir fecha acordada
-  async definirFechaAcordada(
-    trabajoId: number,
-    clienteId: number,
-    fecha: Date,
-  ) {
-    const trabajo = await this.prisma.trabajo.findUnique({
-      where: { id: trabajoId },
-    });
-
-    if (!trabajo) throw new NotFoundException('Trabajo no encontrado');
-    if (trabajo.clienteId !== clienteId)
-      throw new ForbiddenException('No sos el dueño');
-    if (trabajo.estado !== EstadoTrabajo.ASIGNADO)
-      throw new BadRequestException('Trabajo no asignado');
-
-    return this.prisma.trabajo.update({
-      where: { id: trabajoId },
-      data: { fechaAcordada: fecha },
-    });
-  }
-
   // ⭐ Puede valorar
   async puedeValorar(trabajoId: number, clienteId: number) {
     const trabajo = await this.prisma.trabajo.findUnique({
@@ -492,6 +470,5 @@ export class TrabajosService {
   });
 }
 }
-
 
 

@@ -38,6 +38,7 @@
     "class-validator": "^0.14.3",
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "google-auth-library": "^11.3.3",
     "mercadopago": "^2.11.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
@@ -88,9 +89,9 @@
       "^@/(.*)$": "<rootDir>/$1"
     },
     "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "baseUrl": "./"
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "baseUrl": "./"
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
