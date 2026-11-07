@@ -1,13 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import * as SecureStore from 'expo-secure-store'
 import { AuthResponse } from '../auth/auth-types'
-import { login as loginService } from '../auth/auth.service'
+import { login as loginService, googleLogin as googleLoginService } from '../auth/auth.service'
 import { apiFetch } from '../lib/api'
 
 interface AuthContextType {
   user: AuthResponse['user'] | null
   token: string | null
   login: (email: string, password: string) => Promise<AuthResponse>
+  googleLogin: (idToken: string, rol: 'CLIENTE' | 'PROFESIONAL') => Promise<AuthResponse>
   logout: () => Promise<void>
   refreshUser: () => Promise<AuthResponse['user'] | null>
   loading: boolean
@@ -34,19 +35,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })()
   }, [])
 
-  async function login(email: string, password: string) {
+async function login(email: string, password: string) {
     try {
       const res = await loginService(email, password)
-  
+   
       setToken(res.access_token)
       setUser(res.user)
-  
+   
       await SecureStore.setItemAsync('token', res.access_token)
       await SecureStore.setItemAsync('refresh_token', res.refresh_token)
       await SecureStore.setItemAsync('user', JSON.stringify(res.user))
       return res
     } catch (error) {
       console.error('Login error', error)
+      throw error
+    }
+  }
+
+  async function googleLogin(idToken: string, rol: 'CLIENTE' | 'PROFESIONAL') {
+    try {
+      const res = await googleLoginService(idToken, rol)
+
+      setToken(res.access_token)
+      setUser(res.user)
+
+      await SecureStore.setItemAsync('token', res.access_token)
+      await SecureStore.setItemAsync('refresh_token', res.refresh_token)
+      await SecureStore.setItemAsync('user', JSON.stringify(res.user))
+      return res
+    } catch (error) {
+      console.error('Google login error', error)
       throw error
     }
   }
@@ -79,9 +97,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return nextUser
   }
 
-  return (
+return (
     <AuthContext.Provider
-      value={{ user, token, login, logout, refreshUser, loading }}
+      value={{ user, token, login, googleLogin, logout, refreshUser, loading }}
     >
       {children}
     </AuthContext.Provider>

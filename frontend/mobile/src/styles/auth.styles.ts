@@ -151,7 +151,7 @@ export const authStyles = StyleSheet.create({
     lineHeight: 17,
     fontWeight: "600",
   },
-  bottomAccent: {
+bottomAccent: {
     marginTop: 40,
     marginHorizontal: 20,
     padding: 14,
@@ -160,6 +160,40 @@ export const authStyles = StyleSheet.create({
   },
   bottomAccentText: {
     color: "#FFFFFF",
+    fontWeight: "700",
+  },
+  dividerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 12,
+  },
+  divider: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#D6E1F5",
+  },
+  dividerText: {
+    paddingHorizontal: 12,
+    color: "#94A3B8",
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  googleBtn: {
+    marginTop: 10,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#D6E1F5",
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: "center",
+  },
+  googleBtnDisabled: {
+    opacity: 0.5,
+  },
+  googleBtnText: {
+    color: "#1E3A8A",
+    fontSize: 16,
     fontWeight: "700",
   },
 });

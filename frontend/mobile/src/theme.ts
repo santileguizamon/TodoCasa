@@ -9,6 +9,24 @@ export const COLORS = {
   error: '#FF3B30',
 }
 
+// 🎨 Tokens por rol — la diferenciación visual entre Cliente y Profesional
+export const ROLE_COLORS = {
+  CLIENTE: {
+    primary: '#2563EB',
+    primaryDark: '#1D4ED8',
+    primarySoft: '#E6F0FF',
+    primaryBorder: '#BFD4F8',
+    accent: '#1E3A8A',
+  },
+  PROFESIONAL: {
+    primary: '#7C3AED',
+    primaryDark: '#6D28D9',
+    primarySoft: '#F3E8FF',
+    primaryBorder: '#E9D5FF',
+    accent: '#5B21B6',
+  },
+}
+
 export const RADIUS = {
   sm: 8,
   md: 12,

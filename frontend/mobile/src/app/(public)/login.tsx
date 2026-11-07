@@ -5,10 +5,22 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Redirect, Link } from "expo-router";
+import * as AuthSession from "expo-auth-session";
 import { useAuth } from "../../context/auth-context";
 import { authStyles as s } from "../../styles/auth.styles";
+
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; // Reemplazar con el real
+const redirectUri = AuthSession.makeRedirectUri({ scheme: 'mobile' });
+
+const [request, response, promptAsync] = AuthSession.useAuthRequest({
+  clientId: GOOGLE_CLIENT_ID,
+  redirectUri,
+  scopes: ['openid', 'profile', 'email'],
+  responseType: 'id_token',
+  useProxy: true,
+}, { skipCodeExchange: true });
 
 export default function LoginScreen() {
   const { login, user, loading } = useAuth();
@@ -19,13 +31,40 @@ export default function LoginScreen() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  if (user) {
+if (user) {
     if (user.rol === "CLIENTE") {
       return <Redirect href={"/(protected)/cliente" as any} />;
     }
     if (user.rol === "PROFESIONAL") {
       return <Redirect href={"/(protected)/profesional" as any} />;
     }
+  }
+
+  const { googleLogin } = useAuth();
+
+  // Effect to handle Google OAuth response
+  useEffect(() => {
+    if (response?.params?.id_token && pendingGoogleRole) {
+      (async () => {
+        setError("");
+        try {
+          setSubmitting(true);
+          await googleLogin(response.params.id_token, pendingGoogleRole);
+        } catch {
+          setError("Error al iniciar sesion con Google");
+        } finally {
+          setSubmitting(false);
+          setPendingGoogleRole(null);
+        }
+      })();
+    }
+  }, [response?.params?.id_token]);
+
+  const [pendingGoogleRole, setPendingGoogleRole] = useState<'CLIENTE' | 'PROFESIONAL' | null>(null);
+
+  async function handleGoogleLogin(rol: 'CLIENTE' | 'PROFESIONAL') {
+    setPendingGoogleRole(rol);
+    await promptAsync();
   }
 
   async function handleLogin() {
@@ -97,7 +136,7 @@ export default function LoginScreen() {
 
         {error ? <Text style={s.errorText}>{error}</Text> : null}
 
-        <TouchableOpacity
+<TouchableOpacity
           onPress={handleLogin}
           disabled={submitting}
           style={[s.submit, submitting || !email || !password ? s.submitDisabled : null]}
@@ -107,6 +146,42 @@ export default function LoginScreen() {
           ) : (
             <Text style={s.submitText}>Entrar</Text>
           )}
+        </TouchableOpacity>
+
+        <View style={s.dividerRow}>
+          <View style={s.divider} />
+          <Text style={s.dividerText}>o continua con</Text>
+          <View style={s.divider} />
+        </View>
+
+        <TouchableOpacity
+          onPress={() => promptAsync()}
+          disabled={submitting}
+          style={s.googleBtn}
+        >
+          <Text style={s.googleBtnText}>
+            <span role="img" aria-label="google">🔍</span> Google
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => handleGoogleLogin('CLIENTE')}
+          disabled={submitting}
+          style={s.googleBtn}
+        >
+          <Text style={s.googleBtnText}>
+            <span role="img" aria-label="google">🔍</span> Google (Cliente)
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => handleGoogleLogin('PROFESIONAL')}
+          disabled={submitting}
+          style={s.googleBtn}
+        >
+          <Text style={s.googleBtnText}>
+            <span role="img" aria-label="google">🔍</span> Google (Profesional)
+          </Text>
         </TouchableOpacity>
 
         <View style={s.secondaryRow}>

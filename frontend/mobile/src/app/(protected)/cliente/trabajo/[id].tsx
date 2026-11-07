@@ -38,8 +38,11 @@ export default function DetalleTrabajoCliente() {
   const [loading, setLoading] = useState(true)
   const [accionando, setAccionando] = useState(false)
 
-  const [promedios, setPromedios] = useState<Record<number, number>>({})
+const [promedios, setPromedios] = useState<Record<number, number>>({})
   const [comentarios, setComentarios] = useState<Record<number, string[]>>({})
+  const [cantidadOpiniones, setCantidadOpiniones] = useState<
+    Record<number, number>
+  >({})
 
   const [puntaje, setPuntaje] = useState<number | null>(null)
   const [comentario, setComentario] = useState('')
@@ -70,14 +73,17 @@ export default function DetalleTrabajoCliente() {
     cargarDatos()
   }, [id])
 
-  async function cargarReputacion(ofertasList: any[]) {
+async function cargarReputacion(ofertasList: any[]) {
     const promediosTemp: Record<number, number> = {}
     const comentariosTemp: Record<number, string[]> = {}
+    const cantidadesTemp: Record<number, number> = {}
 
     await Promise.all(
       ofertasList.map(async (o) => {
         const res = await obtenerValoracionesPorProfesional(o.profesionalId)
         const valoraciones = Array.isArray(res) ? res : []
+
+        cantidadesTemp[o.profesionalId] = valoraciones.length
 
         if (valoraciones.length > 0) {
           const promedio =
@@ -94,6 +100,7 @@ export default function DetalleTrabajoCliente() {
 
     setPromedios(promediosTemp)
     setComentarios(comentariosTemp)
+    setCantidadOpiniones(cantidadesTemp)
   }
 
   async function handleAceptarOferta(ofertaId: number) {
@@ -216,10 +223,25 @@ export default function DetalleTrabajoCliente() {
             <Text style={styles.emptyText}>Aun no recibiste ofertas para este trabajo.</Text>
           ) : null}
 
-          {ofertas.map((o) => (
+{ofertas.map((o) => (
             <View key={o.id} style={styles.offerCard}>
               <View style={styles.offerTopRow}>
-                <Text style={styles.offerName}>Profesional #{o.profesionalId}</Text>
+                <View style={styles.offerProRow}>
+                  <Text style={styles.offerName}>
+                    {o.profesional?.usuario?.nombre ||
+                      `Profesional #${o.profesionalId}`}
+                  </Text>
+                  {o.profesional?.usuario?.verificado ? (
+                    <View style={styles.offerVerifiedBadge}>
+                      <Ionicons
+                        name="shield-checkmark"
+                        size={12}
+                        color="#047857"
+                      />
+                      <Text style={styles.offerVerifiedText}>Verificado</Text>
+                    </View>
+                  ) : null}
+                </View>
                 <Text style={styles.offerAmount}>${o.monto}</Text>
               </View>
 
@@ -230,7 +252,11 @@ export default function DetalleTrabajoCliente() {
               ) : null}
 
               <Text style={styles.offerRating}>
-                Calificacion: {promedios[o.profesionalId] ?? 'Sin valoraciones'}
+                {promedios[o.profesionalId]
+                  ? `★ ${promedios[o.profesionalId]} · ${
+                      cantidadOpiniones[o.profesionalId] ?? 0
+                    } opiniones`
+                  : 'Sin valoraciones'}
               </Text>
 
               {comentarios[o.profesionalId]?.slice(0, 2).map((c, i) => (

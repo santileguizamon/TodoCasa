@@ -194,7 +194,7 @@ export default function TrabajosProfesionalScreen() {
   if (loading) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color="#2563EB" />
+        <ActivityIndicator size="large" color="#7C3AED" />
       </View>
     )
   }
@@ -220,7 +220,7 @@ export default function TrabajosProfesionalScreen() {
                 Encuentra oportunidades cercanas y aplica filtros por prioridad y presupuesto.
               </Text>
               <View style={styles.heroMeta}>
-                <Ionicons name="briefcase-outline" size={14} color="#1D4ED8" />
+                <Ionicons name="briefcase-outline" size={14} color="#6D28D9" />
                 <Text style={styles.heroMetaText}>
                   {trabajosFiltrados.length} resultados
                 </Text>
@@ -269,7 +269,7 @@ export default function TrabajosProfesionalScreen() {
             {mostrarFiltroPrecio && (
               <View style={styles.budgetBlock}>
                 <View style={styles.budgetHeader}>
-                  <Ionicons name="cash-outline" size={15} color="#1D4ED8" />
+                  <Ionicons name="cash-outline" size={15} color="#6D28D9" />
                   <Text style={styles.budgetTitle}>Precio</Text>
                 </View>
                 <Text style={styles.budgetText}>
@@ -314,7 +314,7 @@ export default function TrabajosProfesionalScreen() {
             {mostrarFiltroEspecialidades && (
               <View style={styles.specialtyFilterBlock}>
                 <View style={styles.budgetHeader}>
-                  <Ionicons name="pricetags-outline" size={15} color="#1D4ED8" />
+                  <Ionicons name="pricetags-outline" size={15} color="#6D28D9" />
                   <Text style={styles.budgetTitle}>Filtrar por especialidad</Text>
                 </View>
 
@@ -403,14 +403,14 @@ export default function TrabajosProfesionalScreen() {
 
             <View style={styles.metaWrap}>
               <View style={styles.metaPill}>
-                <Ionicons name="cash-outline" size={14} color="#1E40AF" />
+                <Ionicons name="cash-outline" size={14} color="#6D28D9" />
                 <Text style={styles.metaPillText}>
                   ${item.rangoMin} - ${item.rangoMax}
                 </Text>
               </View>
               {item.distanciaKm ? (
                 <View style={styles.metaPill}>
-                  <Ionicons name="location-outline" size={14} color="#1E40AF" />
+                  <Ionicons name="location-outline" size={14} color="#6D28D9" />
                   <Text style={styles.metaPillText}>
                     {item.distanciaKm.toFixed(1)} km
                   </Text>

@@ -26,6 +26,28 @@ function suscripcionVigente(s: any): boolean {
   return new Date(s.fechaFin) > new Date()
 }
 
+type TrabajoProximo = {
+  id: number
+  titulo?: string
+  estado?: string
+  fechaAcordada?: string | null
+  cliente?: { nombre?: string | null } | null
+}
+
+function formatoProximo(fechaIso: string) {
+  const d = new Date(fechaIso)
+  const fecha = d.toLocaleDateString('es-AR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  })
+  const hora = d.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+  return { fecha: fecha.charAt(0).toUpperCase() + fecha.slice(1), hora }
+}
+
 export default function ProfesionalDashboard() {
   const { user, logout, token } = useAuth()
   const { location } = useLocation()
@@ -36,8 +58,11 @@ export default function ProfesionalDashboard() {
   const [suscripcionActiva, setSuscripcionActiva] = useState<boolean | null>(
     null,
   )
-  const [trabajosActivos, setTrabajosActivos] = useState(0)
+const [trabajosActivos, setTrabajosActivos] = useState(0)
   const [trabajosFinalizadosMes, setTrabajosFinalizadosMes] = useState(0)
+  const [proximoTrabajo, setProximoTrabajo] = useState<TrabajoProximo | null>(
+    null,
+  )
 
   useEffect(() => {
     const currentUser = user
@@ -114,13 +139,29 @@ export default function ProfesionalDashboard() {
             d.getFullYear() === ahora.getFullYear()
           )
         }).length
-        setTrabajosActivos(activos)
+setTrabajosActivos(activos)
         setTrabajosFinalizadosMes(finalizadosMes)
+
+        const proximo = res
+          .filter(
+            (t: any) =>
+              (t.estado === 'ASIGNADO' ||
+                t.estado === 'PENDIENTE_CONFIRMACION') &&
+              t.fechaAcordada &&
+              new Date(t.fechaAcordada).getTime() >= ahora.getTime(),
+          )
+          .sort(
+            (a: any, b: any) =>
+              new Date(a.fechaAcordada).getTime() -
+              new Date(b.fechaAcordada).getTime(),
+          )[0]
+        setProximoTrabajo((proximo as TrabajoProximo) ?? null)
       })
       .catch(() => {
         if (cancelled) return
         setTrabajosActivos(0)
         setTrabajosFinalizadosMes(0)
+        setProximoTrabajo(null)
       })
 
     return () => {
@@ -129,6 +170,13 @@ export default function ProfesionalDashboard() {
   })
 
   if (!user) return null
+
+  // Redirigir a pago de suscripción si el profesional no tiene suscripción activa
+  useFocusEffect(() => {
+    if (user.rol === 'PROFESIONAL' && suscripcionActiva === false) {
+      router.replace('/profesional/perfil' as any)
+    }
+  }, [suscripcionActiva])
 
   return (
     <ScrollView
@@ -145,14 +193,14 @@ export default function ProfesionalDashboard() {
 
       <View style={styles.summaryCard}>
         <View style={styles.titleRow}>
-          <Ionicons name="star" size={14} color="#1E3A8A" style={styles.titleIcon} />
+          <Ionicons name="star" size={14} color="#5B21B6" style={styles.titleIcon} />
           <Text style={styles.cardTitle}>Reputacion</Text>
         </View>
         <View style={styles.summaryRow}>
           <View style={styles.summaryItem}>
             <Text style={styles.summaryLabel}>Promedio</Text>
             {loadingReputacion ? (
-              <ActivityIndicator size="small" color="#1D4ED8" />
+              <ActivityIndicator size="small" color="#6D28D9" />
             ) : (
               <Text style={styles.summaryValue}>
                 {promedio ? promedio.toFixed(1) : '-'}
@@ -167,7 +215,51 @@ export default function ProfesionalDashboard() {
             <Text style={styles.summaryValue}>{cantidad}</Text>
           </View>
         </View>
-      </View>
+</View>
+
+      {proximoTrabajo?.fechaAcordada ? (
+        (() => {
+          const prox = formatoProximo(proximoTrabajo.fechaAcordada)
+          return (
+            <Pressable
+              onPress={() => router.push('/profesional/agenda' as any)}
+              style={styles.proximoCard}
+            >
+              <View style={styles.proximoHeader}>
+                <Ionicons
+                  name="calendar"
+                  size={15}
+                  color="#FFFFFF"
+                  style={styles.titleIcon}
+                />
+                <Text style={styles.proximoKicker}>Proximo trabajo</Text>
+              </View>
+              <Text style={styles.proximoTitle}>
+                {proximoTrabajo.titulo || 'Trabajo asignado'}
+              </Text>
+              <Text style={styles.proximoDetail}>{prox.fecha}</Text>
+              <View style={styles.proximoFooter}>
+                <Text style={styles.proximoTime}>{prox.hora}</Text>
+                {proximoTrabajo.cliente?.nombre ? (
+                  <Text style={styles.proximoCliente}>
+                    Cliente: {proximoTrabajo.cliente.nombre}
+                  </Text>
+                ) : null}
+              </View>
+            </Pressable>
+          )
+        })()
+      ) : (
+        <Pressable
+          onPress={() => router.push('/profesional/agenda' as any)}
+          style={styles.proximoVacio}
+        >
+          <Ionicons name="calendar-outline" size={18} color="#4C2D87" />
+          <Text style={styles.proximoVacioText}>
+            No tenes trabajos proximos agendados. Miralo en tu agenda.
+          </Text>
+        </Pressable>
+      )}
 
       <Pressable
         onPress={() => router.push('/profesional/trabajos' as any)}

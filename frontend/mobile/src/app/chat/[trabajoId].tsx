@@ -47,7 +47,8 @@ export default function ChatScreen() {
   const [puedeValorarTrabajo, setPuedeValorarTrabajo] = useState(false)
 
   const [mostrarFechaModal, setMostrarFechaModal] = useState(false)
-  const [fechaSeleccionada, setFechaSeleccionada] = useState<Date>(new Date())
+const [fechaSeleccionada, setFechaSeleccionada] = useState<Date>(new Date())
+  const [cantidadTurnos, setCantidadTurnos] = useState(1)
   const [guardandoFecha, setGuardandoFecha] = useState(false)
   const [mostrarPicker, setMostrarPicker] = useState(false)
 
@@ -135,13 +136,13 @@ export default function ChatScreen() {
     }
   }
 
-  async function handleGuardarFecha() {
+async function handleGuardarFecha() {
     if (!trabajo || !chat) return
 
     try {
       setGuardandoFecha(true)
 
-      await definirFechaAcordada(trabajo.id, fechaSeleccionada)
+      await definirFechaAcordada(trabajo.id, fechaSeleccionada, cantidadTurnos)
 
       const fechaFormateada = fechaSeleccionada.toLocaleDateString()
 
@@ -406,15 +407,45 @@ export default function ChatScreen() {
                   </>
                 )}
 
-                <Pressable
-                  onPress={handleGuardarFecha}
-                  disabled={guardandoFecha}
-                  style={styles.modalPrimaryButton}
-                >
-                  <Text style={styles.modalPrimaryText}>Guardar fecha</Text>
-                </Pressable>
+<Pressable
+                    onPress={handleGuardarFecha}
+                    disabled={guardandoFecha}
+                    style={styles.modalPrimaryButton}
+                  >
+                    <Text style={styles.modalPrimaryText}>Guardar fecha</Text>
+                  </Pressable>
 
-                <Pressable
+                  <View style={styles.turnosRow}>
+                    <Text style={styles.turnosLabel}>Duración (turnos de 90 min)</Text>
+                    <View style={styles.turnosOptions}>
+                      <Pressable
+                        onPress={() => setCantidadTurnos(1)}
+                        style={[
+                          styles.turnosOption,
+                          cantidadTurnos === 1 && styles.turnosOptionSelected,
+                        ]}
+                      >
+                        <Text style={[
+                          styles.turnosOptionText,
+                          cantidadTurnos === 1 && styles.turnosOptionTextSelected,
+                        ]}>1 turno (90 min)</Text>
+                      </Pressable>
+                      <Pressable
+                        onPress={() => setCantidadTurnos(2)}
+                        style={[
+                          styles.turnosOption,
+                          cantidadTurnos === 2 && styles.turnosOptionSelected,
+                        ]}
+                      >
+                        <Text style={[
+                          styles.turnosOptionText,
+                          cantidadTurnos === 2 && styles.turnosOptionTextSelected,
+                        ]}>2 turnos (3 horas)</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+
+                  <Pressable
                   onPress={() => setMostrarFechaModal(false)}
                   style={styles.modalSecondaryButton}
                 >

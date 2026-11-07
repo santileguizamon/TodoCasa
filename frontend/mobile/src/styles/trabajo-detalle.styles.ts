@@ -111,16 +111,40 @@ export const trabajoDetalleStyles = StyleSheet.create({
     padding: 12,
     marginTop: 10,
   },
-  offerTopRow: {
+offerTopRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     gap: 8,
   },
+  offerProRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    flex: 1,
+    flexWrap: "wrap",
+    minWidth: 0,
+  },
   offerName: {
     color: "#1E3A8A",
     fontWeight: "700",
-    flex: 1,
+    flexShrink: 1,
+  },
+  offerVerifiedBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
+    backgroundColor: "#DCFCE7",
+    borderWidth: 1,
+    borderColor: "#BBF7D0",
+    borderRadius: 999,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+  },
+  offerVerifiedText: {
+    color: "#047857",
+    fontWeight: "700",
+    fontSize: 11,
   },
   offerAmount: {
     color: "#0F2A52",

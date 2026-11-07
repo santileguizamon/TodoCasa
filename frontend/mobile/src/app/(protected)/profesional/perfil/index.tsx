@@ -134,11 +134,11 @@ export default function MiPerfilProfesional() {
 
         <View style={styles.heroMetaRow}>
           <View style={styles.heroPill}>
-            <Ionicons name="star-outline" size={14} color="#1D4ED8" />
+            <Ionicons name="star-outline" size={14} color="#6D28D9" />
             <Text style={styles.heroPillText}>{calificacionTexto}</Text>
           </View>
           <View style={styles.heroPill}>
-            <Ionicons name="checkmark-done-outline" size={14} color="#1D4ED8" />
+            <Ionicons name="checkmark-done-outline" size={14} color="#6D28D9" />
             <Text style={styles.heroPillText}>Cuenta profesional</Text>
           </View>
         </View>

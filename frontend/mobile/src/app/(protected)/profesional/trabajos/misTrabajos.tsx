@@ -60,7 +60,7 @@ export default function MisTrabajosProfesional() {
   if (loading) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color="#2563EB" />
+        <ActivityIndicator size="large" color="#7C3AED" />
       </View>
     )
   }
@@ -134,11 +134,15 @@ export default function MisTrabajosProfesional() {
                 Cliente: {item.cliente?.nombre || 'No informado'}
               </Text>
 
-              {item.fechaAcordada ? (
+{item.fechaAcordada ? (
                 <View style={styles.metaRow}>
-                  <Ionicons name="calendar-outline" size={14} color="#1E40AF" />
+                  <Ionicons name="calendar-outline" size={14} color="#6D28D9" />
                   <Text style={styles.metaText}>
-                    Fecha acordada: {new Date(item.fechaAcordada).toLocaleDateString('es-AR')}
+                    Fecha acordada: {new Date(item.fechaAcordada).toLocaleDateString('es-AR')} ·{' '}
+                    {new Date(item.fechaAcordada).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
                   </Text>
                 </View>
               ) : null}
@@ -180,7 +184,7 @@ function mapEstado(estado: string) {
     return { label: 'Pendiente', bg: '#FEF3C7', text: '#92400E' }
   }
   if (estado === 'ASIGNADO') {
-    return { label: 'Asignado', bg: '#DBEAFE', text: '#1E3A8A' }
+    return { label: 'Asignado', bg: '#EDE4FD', text: '#5B21B6' }
   }
   if (estado === 'FINALIZADO') {
     return { label: 'Finalizado', bg: '#DCFCE7', text: '#166534' }

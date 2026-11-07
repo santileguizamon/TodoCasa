@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TodoCasa · Mockup completo de la app</title>
+<style>
+  :root{
+    --c-primary:#2563EB; --c-dark:#1D4ED8; --c-accent:#1E3A8A;
+    --c-bg:#EAF2FF; --c-hero:#C7DBFF; --c-heroBorder:#AFC9F9;
+    --c-card:#F7FAFF; --c-cardBorder:#D6E2F5;
+    --p-primary:#7C3AED; --p-dark:#6D28D9; --p-accent:#5B21B6;
+    --p-bg:#F4EFFF; --p-soft:#F3E8FF; --p-border:#E9D5FF;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;padding:36px 16px 90px;background:#0b1220;color:#e2e8f0;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  h1{text-align:center;font-size:24px;font-weight:800;margin:0 0 6px;color:#fff}
+  .lead{text-align:center;color:#94a3b8;margin:0 0 24px;font-size:14px}
+  .nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:1000px;margin:0 auto 40px}
+  .nav a{
+    font-size:12px;font-weight:700;color:#cbd5e1;text-decoration:none;
+    background:#1e293b;border:1px solid #334155;border-radius:999px;padding:6px 12px;
+  }
+  .nav a:hover{background:#334155;color:#fff}
+  h2.sec{
+    max-width:1400px;margin:60px auto 6px;font-size:18px;font-weight:800;color:#fff;
+    border-left:4px solid #7C3AED;padding-left:12px;
+  }
+  h2.sec small{display:block;font-size:12px;font-weight:500;color:#94a3b8;margin-top:4px}
+  .gallery{
+    display:flex;flex-wrap:wrap;gap:34px;justify-content:center;align-items:flex-start;
+    max-width:1400px;margin:26px auto 0;
+  }
+  .col{width:340px}
+  .col>.label{font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#cbd5e1;margin:0 0 4px 4px}
+  .col>.file{font-size:10.5px;color:#64748b;margin:0 0 12px 4px;font-family:Consolas,monospace;word-break:break-all}
+  .phone{
+    width:100%;border-radius:30px;overflow:hidden;box-shadow:0 24px 50px rgba(0,0,0,.5),0 0 0 7px #1e293b;
+    background:#fff;
+  }
+  .screen{padding:22px 16px 30px;min-height:560px}
+  .screen.cliente{background:var(--c-bg)}
+  .screen.prof{background:var(--p-bg)}
+  .screen.white{background:#fff}
+  .ic{width:14px;height:14px;flex:none;display:inline-block;vertical-align:-2px}
+
+  /* heroes */
+  .hero{border:1px solid var(--c-heroBorder);background:var(--c-hero);border-radius:16px;padding:14px;margin-bottom:16px}
+  .hero.prof{background:#E2D4FF;border-color:#D1BCFB}
+  .hero.k{border-radius:20px;padding:18px}
+  .kicker{font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:#27538D}
+  .hero.prof .kicker,.hero.prof .h1{color:#2A125E}
+  .hero .h1{margin-top:4px;font-size:22px;font-weight:800;color:#0F2A52}
+  .hero.k .h1{font-size:28px}
+  .hero .sub{margin-top:5px;font-size:13.5px;color:#3D628F;line-height:19px}
+  .hero.prof .sub{color:#5B3D98}
+
+  /* cards */
+  .card{background:var(--c-card);border:1px solid var(--c-cardBorder);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 6px 12px rgba(37,99,235,.07)}
+  .card.plain{box-shadow:none}
+  .st{font-size:15px;font-weight:800;color:#173A6B;margin:0 0 10px;display:flex;align-items:center;gap:7px}
+  .st .ic{width:16px;height:16px;color:var(--c-accent)}
+  .lbl{margin:8px 0 5px;font-size:13px;font-weight:700;color:#2A4E81}
+  .val{color:#496C97;font-size:14px;line-height:20px}
+  .divider{height:1px;background:#D5E4FF;margin:12px 0}
+
+  /* inputs */
+  .input{background:#ECF4FF;border:1px solid #C8DAF6;border-radius:12px;padding:11px 12px;color:#7B93B7;font-size:13.5px}
+  .textarea{background:#ECF4FF;border:1px solid #C8DAF6;border-radius:12px;padding:11px 12px;color:#7B93B7;font-size:13.5px;min-height:74px}
+
+  /* buttons */
+  .btn{border-radius:12px;padding:13px;text-align:center;font-weight:800;font-size:14.5px;margin-top:12px}
+  .btn:first-child{margin-top:0}
+  .btn-primary{background:var(--c-primary);color:#fff}
+  .btn-primary.prof{background:var(--p-primary)}
+  .btn-secondary{background:#E6F0FF;border:1px solid #C6DBFF;color:var(--c-accent)}
+  .btn-green{background:#22C55E;color:#fff}
+  .btn-warn{background:#F59E0B;color:#1F2937}
+  .btn-danger{background:#FFF1F0;border:1px solid #F3B3AF;color:#B42318}
+  .btn-disabled{background:#93C5FD;color:#fff}
+
+  /* pills / badges */
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .pill{display:inline-flex;align-items:center;gap:6px;background:#EDF5FF;border:1px solid #C8DCFF;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;color:var(--c-dark)}
+  .pill.verified{background:#DCFCE7;border-color:#BBF7D0;color:#047857}
+  .pill.pending{background:#FFF7ED;border-color:#FED7AA;color:#B45309}
+  .pill.prof{background:#F3E8FF;border-color:#E9D5FF;color:#6D28D9}
+  .badge{display:inline-block;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800}
+  .b-blue{background:#DBEAFE;color:#1E3A8A}
+  .b-indigo{background:#E0E7FF;color:#3730A3}
+  .b-amber{background:#FEF3C7;color:#92400E}
+  .b-green{background:#DCFCE7;color:#166534}
+  .b-red{background:#FEE2E2;color:#991B1B}
+  .b-purple{background:#F3E8FF;color:#6B21A8}
+  .b-gray{background:#E5E7EB;color:#374151}
+  .b-urgent{background:#EF4444;color:#fff}
+  .cat{background:#E0ECFF;border:1px solid #C2D6FF;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--c-accent)}
+  .cat.prof{background:#EDE4FD;border-color:#DDD0FB;color:#5B21B6}
+  .meta{display:inline-flex;align-items:center;gap:6px;background:#E6F0FF;border:1px solid #C6DBFF;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;color:var(--c-accent)}
+  .meta.prof{background:#F3E8FF;border-color:#E9D5FF;color:#6D28D9}
+
+  /* tabs / chips */
+  .tabs{display:flex;gap:8px;margin:14px 0}
+  .tab{flex:1;text-align:center;padding:11px;border-radius:12px;font-size:13px;font-weight:700;background:#E9F1FF;border:1px solid #BED4FA;color:#245CB8}
+  .tab.active{background:var(--c-primary);border-color:var(--c-primary);color:#fff}
+  .tab.prof{background:#F3E8FF;border:1px solid #D1BCFB;color:#6D28D9}
+  .tab.prof.active{background:#7C3AED;border-color:#7C3AED;color:#fff}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:8px 12px;border-radius:20px;font-size:12px;font-weight:700;background:#E9F1FF;border:1px solid #BED4FA;color:#245CB8}
+  .chip.active{background:var(--c-primary);border-color:var(--c-primary);color:#fff}
+  .chip.prof{background:#F3E8FF;border:1px solid #D1BCFB;color:#6D28D9}
+  .chip.prof.active{background:#7C3AED;border-color:#7C3AED;color:#fff}
+
+  /* lists */
+  .list{background:#fff;border:1px solid #D7DEE9;border-radius:18px;overflow:hidden}
+  .lrow{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #E2E8F0}
+  .lrow:last-child{border-bottom:none}
+  .lrow .ico{width:34px;height:34px;border-radius:10px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;color:#10386E;font-size:15px}
+  .lrow .t{flex:1}
+  .lrow .t b{display:block;font-size:15px;color:#10386E}
+  .lrow .t span{font-size:12px;color:#64748B}
+  .chev{color:#94A3B8;font-size:16px}
+
+  /* chat rows */
+  .cchat{display:flex;gap:10px;padding:13px 16px;border-bottom:1px solid #E2E8F0;align-items:flex-start}
+  .cchat.unread{background:#F8FBFF}
+  .avatar{width:44px;height:44px;border-radius:22px;background:#E2E8F0;display:flex;align-items:center;justify-content:center;font-weight:800;color:#0F172A;flex:none}
+  .cchat .body{flex:1;min-width:0}
+  .cchat .top{display:flex;justify-content:space-between;gap:8px}
+  .cchat .nm{font-size:15px;font-weight:700;color:#0F172A}
+  .cchat .hr{font-size:12px;color:#64748B;font-weight:600}
+  .cchat .job{margin-top:2px;font-size:12px;color:var(--c-primary);font-weight:700}
+  .cchat .pv{margin-top:2px;font-size:13px;color:#475569}
+  .nbadge{background:#22C55E;min-width:20px;height:20px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800;padding:0 5px}
+
+  /* chat bubbles */
+  .chatline{display:flex;margin:6px 0}
+  .bubble{max-width:80%;padding:12px 16px;border-radius:20px;font-size:14px;line-height:19px}
+  .mine{margin-left:auto;background:var(--c-primary);color:#fff}
+  .other{background:#E6F0FF;border:1px solid #BFD4F8;color:#0F172A}
+
+  /* ---- calendar (agenda) ---- */
+  .cal{background:#fff;border:1px solid #D9E5F7;border-radius:16px;padding:12px;margin-top:12px}
+  .calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .calhead b{font-size:16px;color:#0F172A}
+  .arrow{width:30px;height:30px;border-radius:15px;background:#EAF1FE;display:flex;align-items:center;justify-content:center;color:var(--c-accent)}
+  .wd{display:flex;margin-bottom:6px}
+  .wd span{flex:1;text-align:center;font-size:12px;font-weight:700;color:#64748B}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+  .day{aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#0F172A}
+  .day.out{opacity:.45;color:#94A3B8}
+  .day.sel{background:#DBEAFE;color:var(--c-accent)}
+  .day.today{color:var(--c-primary)}
+  .day .dots{margin-top:2px;display:flex;align-items:center;gap:4px}
+  .day .dot{width:5px;height:5px;border-radius:3px;background:var(--c-primary)}
+  .day .cnt{font-size:10px;color:#1E40AF;font-weight:700}
+  .day.sel.prof{background:#E9D5FF;color:#5B21B6}
+  .day.today.prof{color:#7C3AED}
+  .day .dots.prof .dot{background:#7C3AED}
+  .day .cnt.prof{color:#6D28D9}
+  .dayblock{margin-top:14px}
+  .dayblock .dt{font-size:15px;font-weight:800;color:#3B0764;margin-bottom:10px}
+
+  /* modal */
+  .modalwrap{position:relative;min-height:560px}
+  .modalover{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:18px}
+  .modalcard{background:#fff;border-radius:12px;padding:16px;width:100%}
+  .mtt{text-align:center;font-weight:800;color:#0F172A;margin-bottom:12px}
+
+  /* mini month picker inside modal */
+  .pickcal{background:#F8FAFF;border:1px solid #D6E2F5;border-radius:12px;padding:10px}
+  .pickcal .ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .pickcal .ph b{color:#0F172A;font-size:14px}
+  .pickcal .pgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+  .pickcal .pd{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:50%;color:#0F172A}
+  .pickcal .pd.out{color:#CBD5E1}
+  .pickcal .pd.sel{background:var(--c-primary);color:#fff;font-weight:800}
+  .timewheel{margin-top:10px;display:flex;justify-content:center;gap:24px;background:#F8FAFF;border:1px solid #D6E2F5;border-radius:12px;padding:12px;font-weight:800;color:#0F172A;font-size:20px}
+
+  /* turnos selector */
+  .turnos{margin-top:14px}
+  .turnos .tl{font-size:12px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+  .turnos .opts{display:flex;gap:10px}
+  .turnos .opt{flex:1;text-align:center;padding:13px;border-radius:10px;border:1px solid #D6E2F5;background:#F8FAFF;font-weight:800;color:#64748B}
+  .turnos .opt.sel{border-color:var(--c-primary);background:#E6F0FF;color:var(--c-accent)}
+
+  .note{max-width:900px;margin:16px auto 0;background:#111c31;border:1px solid #1e293b;border-radius:14px;padding:16px 18px;color:#cbd5e1;font-size:13.5px;line-height:21px}
+  .note b{color:#fff}
+  .note code{background:#0b1220;border:1px solid #334155;border-radius:6px;padding:1px 6px;font-size:12px;color:#a5b4fc}
+  .flow{max-width:1400px;margin:0 auto;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .step{background:#111c31;border:1px solid #1e293b;border-radius:12px;padding:12px 16px;color:#cbd5e1;font-size:12.5px;width:210px}
+  .step b{display:block;color:#a5b4fc;font-size:11px;letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px}
+</style>
+</head>
+<body>
+  <svg style="display:none">
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .8-5.2 4.7 1.4 7L12 17.8 5.8 21l1.4-7L2 9.3l7-.8z"/></symbol>
+    <symbol id="i-loc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-cash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-brief" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 01-11.5 7.2L4 21l1.8-5.5A8 8 0 1121 12z"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 17l5-5-5-5M21 12H9M12 19H5a2 2 0 01-2-2V7a2 2 0 012-2h7"/></symbol>
+    <symbol id="i-flash" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></symbol>
+    <symbol id="i-time" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-add" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="i-ana" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-9-9V4h7z"/><circle cx="7.5" cy="7.5" r="1.4"/></symbol>
+    <symbol id="i-tool" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6a4 4 0 105 5l-3 3-5 5-4-4 5-5z"/><circle cx="18" cy="6" r="2"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></symbol>
+  </svg>
+
+  <h1>TodoCasa · Mockup completo de la app</h1>
+  <p class="lead">Todas las pantallas + cómo funciona el calendario. Mock fiel a los estilos reales (React Native). No es la app real.</p>
+
+  <div class="nav">
+    <a href="#cal">📅 Calendario</a>
+    <a href="#pub">Públicas</a>
+    <a href="#cli">Cliente</a>
+    <a href="#pro">Profesional</a>
+  </div>
+
+  <!-- ==================== FLUJO CALENDARIO ==================== -->
+  <h2 class="sec" id="cal">Cómo funciona el calendario<small>El cliente fija día + hora + turnos desde el chat; el backend valida que el profesional no tenga otro trabajo en ese horario.</small></h2>
+
+  <div class="flow" style="margin-bottom:6px">
+    <div class="step"><b>Paso 1</b>El cliente acepta una oferta → el trabajo queda <b>Asignado</b> y se abre el chat.</div>
+    <div class="step"><b>Paso 2</b>En el chat aparece "Definir fecha del trabajo". Toca y elige día, hora y duración (1 o 2 turnos).</div>
+    <div class="step"><b>Paso 3</b>Se guarda la fecha y se envía un mensaje automático al chat con la fecha acordada.</div>
+    <div class="step"><b>Paso 4</b>El profesional ve el trabajo en su <b>Agenda</b>, con hora y cliente.</div>
+  </div>
+
+  <div class="note">
+    <b>Reglas del calendario:</b> 1 turno = 90 minutos (<code>DURACION_TURNO_MIN = 90</code>). El cliente puede elegir <b>1 o 2 turnos</b>.
+    El trabajo se considera "agendado" cuando está <b>Asignado + tiene fecha</b> (no hay estado nuevo).
+    Si el profesional ya tiene otro trabajo asignado que se solapa con ese horario, el backend responde <b>409</b> y no se guarda.
+    El cliente <b>no</b> tiene restricción de superposición (puede tener trabajos seguidos).
+  </div>
+
+  <div class="gallery">
+    <div class="col">
+      <div class="label">Chat · antes de agendar</div>
+      <div class="file">chat/[trabajoId].tsx</div>
+      <div class="phone"><div class="screen cliente">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div class="avatar" style="background:#DCEBFF;border:1px solid #BFD8FF;color:#1E3A8A">M</div>
+          <div><div style="font-size:18px;font-weight:800;color:#0F172A">Martín Gómez</div><div style="font-size:12px;color:#64748B;font-weight:600">Profesional</div></div>
+        </div>
+        <div class="btn btn-primary">Definir fecha del trabajo</div>
+        <div style="margin-top:14px">
+          <div class="chatline"><div class="bubble other">Hola! ¿Cuándo te queda bien que vaya?</div></div>
+          <div class="chatline"><div class="bubble mine">Buenas! Coordinemos por acá 👍</div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:16px">
+          <div class="input" style="flex:1;border-radius:24px;padding:10px 16px">Escribi un mensaje...</div>
+          <div class="btn btn-primary" style="margin:0;border-radius:24px">Enviar</div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Modal · elegir fecha y hora</div>
+      <div class="file">chat/[trabajoId].tsx (DateTimePicker + turnos)</div>
+      <div class="phone"><div class="screen cliente modalwrap" style="padding:0">
+        <div class="modalover">
+          <div class="modalcard">
+            <div class="mtt">Selecciona la fecha del trabajo</div>
+            <div class="pickcal">
+              <div class="ph">
+                <div class="arrow"><svg class="ic"><use href="#i-back"/></svg></div>
+                <b>Septiembre 2026</b>
+                <div class="arrow"><svg class="ic"><use href="#i-chev"/></svg></div>
+              </div>
+              <div class="pgrid" style="margin-bottom:4px;color:#64748B;font-size:11px;font-weight:700">
+                <span style="text-align:center">Lu</span><span style="text-align:center">Ma</span><span style="text-align:center">Mi</span><span style="text-align:center">Ju</span><span style="text-align:center">Vi</span><span style="text-align:center">Sa</span><span style="text-align:center">Do</span>
+              </div>
+              <div class="pgrid">
+                <div class="pd out">31</div><div class="pd">1</div><div class="pd">2</div><div class="pd">3</div><div class="pd">4</div><div class="pd">5</div><div class="pd">6</div>
+                <div class="pd">7</div><div class="pd">8</div><div class="pd">9</div><div class="pd">10</div><div class="pd">11</div><div class="pd">12</div><div class="pd">13</div>
+                <div class="pd">14</div><div class="pd sel">15</div><div class="pd">16</div><div class="pd">17</div><div class="pd">18</div><div class="pd">19</div><div class="pd">20</div>
+                <div class="pd">21</div><div class="pd">22</div><div class="pd">23</div><div class="pd">24</div><div class="pd">25</div><div class="pd">26</div><div class="pd">27</div>
+                <div class="pd">28</div><div class="pd">29</div><div class="pd">30</div><div class="pd out">1</div><div class="pd out">2</div><div class="pd out">3</div><div class="pd out">4</div>
+              </div>
+              <div class="timewheel"><span>14</span><span>:</span><span>30</span></div>
+            </div>
+
+            <div class="turnos">
+              <div class="tl">Duración (turnos)</div>
+              <div class="opts">
+                <div class="opt">1</div>
+                <div class="opt sel">2</div>
+              </div>
+            </div>
+
+            <div class="btn btn-green" style="margin-top:14px">Guardar fecha</div>
+            <div class="btn" style="color:#64748B;font-weight:600;background:none">Cancelar</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Chat · después de agendar</div>
+      <div class="file">status card + mensaje automático</div>
+      <div class="phone"><div class="screen cliente">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div class="avatar" style="background:#DCEBFF;border:1px solid #BFD8FF;color:#1E3A8A">M</div>
+          <div><div style="font-size:18px;font-weight:800;color:#0F172A">Martín Gómez</div><div style="font-size:12px;color:#64748B;font-weight:600">Profesional</div></div>
+        </div>
+        <div style="border:1px solid #BFD8FF;background:#EAF2FF;border-radius:12px;padding:10px;text-align:center;font-weight:700;color:#1E3A8A;margin-bottom:10px">
+          Fecha acordada: 15/9/2026 · 14:30
+        </div>
+        <div class="chatline"><div class="bubble other">Hola! ¿Cuándo te queda bien que vaya?</div></div>
+        <div class="chatline"><div class="bubble mine">Buenas! Coordinemos por acá 👍</div></div>
+        <div class="chatline"><div class="bubble mine">Fecha del trabajo acordada para el 15/9/2026 a las 14:30 (2 turnos)</div></div>
+        <div class="btn btn-green" style="margin-top:14px">Finalizar trabajo</div>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <div class="input" style="flex:1;border-radius:24px;padding:10px 16px">Escribi un mensaje...</div>
+          <div class="btn btn-primary" style="margin:0;border-radius:24px">Enviar</div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Agenda · profesional</div>
+      <div class="file">profesional/agenda.tsx</div>
+      <div class="phone"><div class="screen" style="background:#F4EFFF">
+        <div class="hero prof">
+          <div class="kicker">Planificación</div>
+          <div class="h1">Agenda de trabajos</div>
+          <div class="sub">Organiza tus trabajos por mes y fecha.</div>
+        </div>
+        <div class="cal" style="border-color:#E9E1F7">
+          <div class="calhead">
+            <div class="arrow" style="background:#F3E8FF;color:#5B21B6"><svg class="ic"><use href="#i-back"/></svg></div>
+            <b style="color:#2A125E">Septiembre 2026</b>
+            <div class="arrow" style="background:#F3E8FF;color:#5B21B6"><svg class="ic"><use href="#i-chev"/></svg></div>
+          </div>
+          <div class="wd"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sa</span><span>Do</span></div>
+          <div class="grid">
+            <div class="day out">31</div><div class="day">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div><div class="day">5</div><div class="day">6</div>
+            <div class="day">7</div><div class="day">8<div class="dots prof"><span class="dot"></span><span class="cnt prof">1</span></div></div><div class="day">9</div><div class="day">10</div><div class="day">11</div><div class="day">12</div><div class="day">13</div>
+            <div class="day">14</div><div class="day sel prof">15<div class="dots prof"><span class="dot"></span><span class="cnt prof">2</span></div></div><div class="day">16</div><div class="day">17<div class="dots prof"><span class="dot"></span><span class="cnt prof">1</span></div></div><div class="day">18</div><div class="day">19</div><div class="day">20</div>
+            <div class="day">21</div><div class="day">22</div><div class="day">23</div><div class="day">24</div><div class="day">25</div><div class="day">26</div><div class="day">27</div>
+            <div class="day">28</div><div class="day">29</div><div class="day">30</div><div class="day out">1</div><div class="day out">2</div><div class="day out">3</div><div class="day out">4</div>
+          </div>
+        </div>
+        <div class="dayblock">
+          <div class="dt">Martes 15 de septiembre</div>
+          <div class="card plain" style="background:#F7F3FE;border-color:#E9E1F7;padding:12px 14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+              <b style="flex:1;color:#2A125E;font-size:15px">Reparación de grifería en baño</b>
+              <span class="badge b-purple">Asignado</span>
+            </div>
+            <div style="margin-top:7px;color:#6B4BAA;font-size:13px">14:30 · Cliente: Lucía Fernández</div>
+          </div>
+          <div class="card plain" style="background:#F7F3FE;border-color:#E9E1F7;padding:12px 14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+              <b style="flex:1;color:#2A125E;font-size:15px">Instalación de ventilador de techo</b>
+              <span class="badge b-purple">Asignado</span>
+            </div>
+            <div style="margin-top:7px;color:#6B4BAA;font-size:13px">17:00 · Cliente: Diego Sosa</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ==================== PÚBLICAS ==================== -->
+  <h2 class="sec" id="pub">Pantallas públicas<small>Login, registro y espera de suscripción.</small></h2>
+  <div class="gallery">
+    <div class="col">
+      <div class="label">Login</div><div class="file">(public)/login.tsx</div>
+      <div class="phone"><div class="screen white" style="background:#F6F7FB">
+        <div style="text-align:center;padding-top:44px">
+          <div style="font-size:26px;font-weight:800;color:#1E3A8A">TODOCASA</div>
+          <div style="margin-top:8px;color:#64748B;font-size:15px">Inicia sesion y coordina tu proximo trabajo.</div>
+        </div>
+        <div class="card" style="background:#F8FAFF;border-color:#D6E1F5;border-radius:20px;margin-top:28px">
+          <div class="lbl">Email</div>
+          <div class="input" style="background:#fff;border-color:#E2E8F0;border-radius:14px">Email</div>
+          <div class="lbl">Contrasena</div>
+          <div class="input" style="background:#fff;border-color:#E2E8F0;border-radius:14px;display:flex;justify-content:space-between"><span>Contrasena</span><span style="color:#2563EB;font-weight:700;font-size:12px">Mostrar</span></div>
+          <div class="btn btn-primary" style="border-radius:14px;margin-top:16px">Entrar</div>
+          <div style="text-align:center;margin-top:14px;font-size:13px;color:#64748B">No tenes cuenta? <b style="color:#2563EB">Registrate</b></div>
+        </div>
+        <div class="btn btn-primary" style="margin-top:40px;background:#2563EB">Pagas solo cuando el trabajo esta terminado.</div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Registro</div><div class="file">(public)/register.tsx</div>
+      <div class="phone"><div class="screen white" style="background:#F6F7FB">
+        <div style="text-align:center;padding-top:44px">
+          <div style="font-size:26px;font-weight:800;color:#1E3A8A">Crear cuenta</div>
+          <div style="margin-top:8px;color:#64748B;font-size:15px">Unite a TODOCASA en segundos.</div>
+        </div>
+        <div class="card" style="background:#F8FAFF;border-color:#D6E1F5;border-radius:20px;margin-top:24px">
+          <div class="lbl">Nombre</div><div class="input" style="background:#fff;border-color:#E2E8F0;border-radius:14px">Nombre completo</div>
+          <div class="lbl">Email</div><div class="input" style="background:#fff;border-color:#E2E8F0;border-radius:14px">Email</div>
+          <div class="lbl">Contrasena</div><div class="input" style="background:#fff;border-color:#E2E8F0;border-radius:14px">Contrasena</div>
+          <div class="lbl">Tipo de cuenta</div>
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;text-align:center;padding:12px;border-radius:14px;background:#E0F2FE;border:1px solid #2563EB;color:#1E3A8A;font-weight:700">Cliente</div>
+            <div style="flex:1;text-align:center;padding:12px;border-radius:14px;background:#fff;border:1px solid #D6E1F5;color:#475569;font-weight:700">Profesional</div>
+          </div>
+          <div class="btn btn-primary" style="border-radius:14px;margin-top:16px">Registrarse</div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Suscripción pendiente</div><div class="file">(public)/suscripcion-pendiente.tsx</div>
+      <div class="phone"><div class="screen white" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+        <div style="width:34px;height:34px;border:4px solid #2563EB;border-top-color:transparent;border-radius:50%"></div>
+        <div style="font-size:20px;font-weight:600;margin-top:24px">Estamos confirmando tu suscripción</div>
+        <div style="margin-top:12px;color:#6B7280;font-size:14px">Esto puede tardar unos segundos. No cierres la aplicación.</div>
+        <div style="margin-top:30px;color:#2563EB;font-weight:700;padding:12px">Cancelar y volver</div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ==================== CLIENTE ==================== -->
+  <h2 class="sec" id="cli">Pantallas del Cliente<small>Paleta azul. Incluye las nuevas señales de confianza en ofertas y perfil.</small></h2>
+  <div class="gallery">
+    <div class="col">
+      <div class="label">Dashboard</div><div class="file">cliente/index.tsx</div>
+      <div class="phone"><div class="screen cliente">
+        <div class="hero k"><div class="h1">Hola, Lucía</div><div class="sub">Publica trabajos, revisa propuestas y coordina todo desde un solo lugar.</div></div>
+        <div class="btn btn-primary" style="border-radius:18px;padding:20px;text-align:left">
+          <div style="display:flex;align-items:center;gap:8px"><svg class="ic" style="width:18px;height:18px"><use href="#i-add"/></svg><span style="font-size:20px;font-weight:700">Publicar trabajo</span></div>
+          <div style="font-size:14px;color:#DBEAFE;margin-top:8px;font-weight:500">Recibi presupuestos en minutos</div>
+        </div>
+        <div class="card" style="background:#F9F3E3;border-color:#E8D4A8;border-radius:18px">
+          <div class="st" style="color:#92400E"><svg class="ic" style="color:#92400E"><use href="#i-time"/></svg>Acciones pendientes</div>
+          <div style="color:#B45309;font-weight:700;font-size:13px;line-height:22px">1 trabajo(s) con ofertas por revisar<br>2 trabajo(s) para confirmar finalizacion<br>1 trabajo(s) para valorar</div>
+        </div>
+        <div class="list">
+          <div class="lrow"><div class="ico"><svg class="ic"><use href="#i-brief"/></svg></div><div class="t"><b>Mis trabajos</b><span>Estado y seguimiento</span></div><span class="chev">›</span></div>
+          <div class="lrow"><div class="ico"><svg class="ic"><use href="#i-chat"/></svg></div><div class="t"><b>Chats</b><span>Conversaciones activas</span></div><span class="chev">›</span></div>
+          <div class="lrow"><div class="ico"><svg class="ic"><use href="#i-person"/></svg></div><div class="t"><b>Mi perfil</b><span>Datos personales y direccion</span></div><span class="chev">›</span></div>
+        </div>
+        <div style="text-align:center;margin-top:18px;color:#B42318;font-weight:700">Cerrar sesion</div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Nuevo trabajo</div><div class="file">cliente/nuevo.tsx</div>
+      <div class="phone"><div class="screen cliente">
+        <div class="hero"><div class="kicker">Publicacion</div><div class="h1">Nuevo trabajo</div><div class="sub">Completa los datos y recibe propuestas de profesionales cercanos.</div></div>
+        <div class="card">
+          <div class="st"><svg class="ic"><use href="#i-tool"/></svg>Servicio</div>
+          <div class="lbl">Titulo</div><div class="input">Ej: Arreglar calefon</div>
+          <div class="lbl">Descripcion</div><div class="textarea">Explica el problema...</div>
+          <div class="lbl">Especialidades (1 o 2)</div>
+          <div class="chips"><span class="chip active">Plomeria</span><span class="chip">Electricidad</span><span class="chip">Pintura</span></div>
+        </div>
+        <div class="card">
+          <div class="st"><svg class="ic"><use href="#i-cash"/></svg>Presupuesto</div>
+          <div class="lbl">Rango estimado</div>
+          <div style="display:flex;gap:8px"><div class="input" style="flex:1">Min</div><div class="input" style="flex:1">Max</div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+            <div><div style="font-weight:700;color:#0F2A52;font-size:14px">Trabajo urgente</div><div style="font-size:12px;color:#3D628F">Se destaca en exploracion</div></div>
+            <div style="width:44px;height:24px;border-radius:12px;background:#2563EB;position:relative"><div style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#fff"></div></div>
+          </div>
+        </div>
+        <div class="btn btn-primary" style="border-radius:14px;padding:16px">Publicar trabajo</div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Mis trabajos</div><div class="file">cliente/misTrabajos.tsx</div>
+      <div class="phone"><div class="screen cliente">
+        <div class="hero"><div class="h1">Mis trabajos</div><div class="sub">Revisa el estado de cada publicacion y avanza con tus solicitudes.</div></div>
+        <div class="tabs"><div class="tab active">Activos (2)</div><div class="tab">Historial (1)</div></div>
+        <div class="card" style="padding:18px">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+            <b style="color:#0F2A52;font-size:16px">Reparación de grifería en baño</b>
+            <span class="badge b-blue">Publicado</span>
+          </div>
+          <div style="margin-top:8px;color:#3D628F;font-size:13.5px">Pérdida de agua en la canilla de la ducha.</div>
+          <div style="margin-top:12px"><span class="meta"><svg class="ic"><use href="#i-tag"/></svg>2 oferta(s)</span></div>
+          <div class="btn btn-danger" style="display:flex;gap:6px;align-items:center;justify-content:center;padding:10px;margin-top:12px"><svg class="ic" style="color:#B42318"><use href="#i-trash"/></svg>Eliminar</div>
+        </div>
+        <div class="card" style="padding:18px">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+            <b style="color:#0F2A52;font-size:16px">Instalación de ventilador de techo</b>
+            <span class="badge b-amber">Pend. confirmacion</span>
+          </div>
+          <div style="margin-top:8px;color:#3D628F;font-size:13.5px">Colocar y cablear ventilador nuevo.</div>
+          <div style="margin-top:12px"><span class="meta"><svg class="ic"><use href="#i-tag"/></svg>3 oferta(s)</span></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Detalle trabajo · ofertas</div><div class="file">cliente/trabajo/[id].tsx</div>
+      <div class="phone"><div class="screen cliente">
+        <div class="hero"><div class="kicker">Detalle del trabajo</div><div class="h1">Reparación de grifería en baño</div><div class="sub">Pérdida de agua en la canilla de la ducha. Necesito que la revisen y reparen.</div>
+          <div class="row" style="margin-top:10px"><span class="badge b-blue">Publicado</span><span class="cat">$8000 - $15000</span></div>
+        </div>
+        <div class="card">
+          <div class="st">Ofertas recibidas</div>
+          <div class="card plain" style="background:#fff;border-color:#D8E6FF;padding:12px;margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><b style="color:#1E3A8A">Martín Gómez</b><span class="pill verified" style="padding:3px 7px;font-size:11px"><svg class="ic" style="width:12px;height:12px"><use href="#i-shield"/></svg>Verificado</span></div>
+              <b style="color:#0F2A52;font-size:18px">$12000</b>
+            </div>
+            <div style="margin-top:6px;color:#3D628F;font-weight:600;font-size:14px">★ 4.8 · 23 opiniones</div>
+            <div style="margin-top:4px;color:#5A769B;font-style:italic;font-size:13px">"Muy prolijo y puntual, solucionó todo en el día."</div>
+            <div class="btn btn-secondary" style="margin-top:10px">Ver perfil</div>
+            <div class="btn btn-primary" style="margin-top:8px">Aceptar oferta</div>
+          </div>
+          <div class="card plain" style="background:#fff;border-color:#D8E6FF;padding:12px;margin-bottom:0">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+              <b style="color:#1E3A8A">Jorge Pérez</b>
+              <b style="color:#0F2A52;font-size:18px">$9500</b>
+            </div>
+            <div style="margin-top:6px;color:#3D628F;font-weight:600;font-size:14px">Sin valoraciones</div>
+            <div class="btn btn-secondary" style="margin-top:10px">Ver perfil</div>
+            <div class="btn btn-primary" style="margin-top:8px">Aceptar oferta</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Perfil del profesional</div><div class="file">cliente/profesional/[id].tsx</div>
+      <div class="phone"><div class="screen cliente">
+        <div class="hero"><div class="kicker">Perfil profesional</div><div class="h1">Martín Gómez</div><div class="sub">martin.gomez@mail.com</div>
+          <div class="row" style="margin-top:10px">
+            <span class="pill"><svg class="ic"><use href="#i-star"/></svg>★ 4.8 · 23 opiniones</span>
+            <span class="pill verified"><svg class="ic"><use href="#i-shield"/></svg>Profesional verificado</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="st">Informacion profesional</div>
+          <div class="lbl" style="margin-top:0">Descripcion</div><div class="val">Plomero matriculado con 10 años de experiencia.</div>
+          <div class="divider"></div>
+          <div class="lbl" style="margin-top:0">Especialidades</div><div class="val">Plomeria, Gas</div>
+        </div>
+        <div class="card">
+          <div class="st">Opiniones de clientes</div>
+          <div style="background:#EEF4FF;border:1px solid #CFE0FF;border-radius:8px;padding:12px;margin-bottom:10px"><b style="color:#1E3A8A">★ 5</b><div style="color:#435E84;margin-top:4px">"Excelente, muy recomendable."</div></div>
+          <div style="background:#EEF4FF;border:1px solid #CFE0FF;border-radius:8px;padding:12px"><b style="color:#1E3A8A">★ 4</b><div style="color:#435E84;margin-top:4px">"Buen trabajo, llegó puntual."</div></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Trabajo finalizado · valorar</div><div class="file">cliente/trabajo/[id].tsx (estado FINALIZADO)</div>
+      <div class="phone"><div class="screen cliente">
+        <div class="hero"><div class="kicker">Detalle del trabajo</div><div class="h1">Reparación de grifería en baño</div>
+          <div class="row" style="margin-top:10px"><span class="badge b-green">Finalizado</span></div>
+        </div>
+        <div class="card">
+          <div class="st"><svg class="ic"><use href="#i-star"/></svg>Valorar al profesional</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:#EEF4FF;border:1px solid #CFE0FF;border-radius:12px;padding:12px">
+            <div><b style="color:#1E3A8A">Martín Gómez</b><div style="color:#435E84;font-size:12px;margin-top:3px">Plomero · ★ 4.8</div></div>
+            <span class="pill verified" style="padding:3px 7px;font-size:11px"><svg class="ic" style="width:12px;height:12px"><use href="#i-shield"/></svg>Verificado</span>
+          </div>
+          <div class="lbl" style="margin-top:14px">Calificacion</div>
+          <div style="display:flex;gap:10px">
+            <div style="flex:1;text-align:center;padding:12px;border-radius:12px;background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;font-weight:800;font-size:16px">★ 5</div>
+            <div style="flex:1;text-align:center;padding:12px;border-radius:12px;background:#fff;border:1px solid #D6E2F5;color:#64748B;font-weight:800;font-size:16px">★ 4</div>
+            <div style="flex:1;text-align:center;padding:12px;border-radius:12px;background:#fff;border:1px solid #D6E2F5;color:#64748B;font-weight:800;font-size:16px">★ 3</div>
+            <div style="flex:1;text-align:center;padding:12px;border-radius:12px;background:#fff;border:1px solid #D6E2F5;color:#64748B;font-weight:800;font-size:16px">★ 2</div>
+            <div style="flex:1;text-align:center;padding:12px;border-radius:12px;background:#fff;border:1px solid #D6E2F5;color:#64748B;font-weight:800;font-size:16px">★ 1</div>
+          </div>
+          <div class="lbl">Comentario</div><div class="textarea">Conta tu experiencia...</div>
+        </div>
+        <div class="btn btn-green">Enviar valoracion</div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Chats</div><div class="file">cliente/chats/index.tsx</div>
+      <div class="phone"><div class="screen white">
+        <div style="display:flex;align-items:center;gap:10px"><div style="font-size:28px;font-weight:800;color:#0F172A">Chats</div><span class="nbadge">3</span></div>
+        <div style="text-align:right;color:#2563EB;font-weight:700;font-size:13px;margin:6px 0 4px">Ver archivados</div>
+        <div class="cchat unread"><div class="avatar">M</div><div class="body"><div class="top"><span class="nm">Martín Gómez</span><span class="hr">14:22</span></div><div class="job">Reparación de grifería en baño</div><div class="pv" style="color:#1E293B;font-weight:700">Nos vemos el martes entonces.</div></div><span class="nbadge">2</span></div>
+        <div class="cchat"><div class="avatar">J</div><div class="body"><div class="top"><span class="nm">Jorge Pérez</span><span class="hr">Lun</span></div><div class="job">Instalación de ventilador</div><div class="pv">Puedo pasar el jueves.</div></div></div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Chats archivados</div><div class="file">cliente/chats/archivados.tsx</div>
+      <div class="phone"><div class="screen white">
+        <div style="font-size:28px;font-weight:800;color:#0F172A">Chats archivados</div>
+        <div style="text-align:right;color:#2563EB;font-weight:700;font-size:13px;margin:6px 0 4px">Volver a chats</div>
+        <div class="cchat"><div class="avatar">C</div><div class="body"><div class="top"><span class="nm">Carlos Ruiz</span><span class="hr">12 ago</span></div><div class="job">Pintura de living</div><div class="pv">Gracias por todo!</div><div style="color:#1D4ED8;font-weight:700;margin-top:8px;font-size:13px">Restaurar chat</div></div></div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Mi perfil</div><div class="file">cliente/perfil/index.tsx</div>
+      <div class="phone"><div class="screen cliente">
+        <div class="hero"><div class="kicker">Perfil cliente</div><div class="h1">Lucía Fernández</div><div class="sub">lucia@mail.com</div>
+          <div class="row" style="margin-top:10px"><span class="pill"><svg class="ic"><use href="#i-person"/></svg>Cuenta activa</span></div>
+        </div>
+        <div class="card">
+          <div class="st">Informacion personal</div>
+          <div class="lbl" style="margin-top:0">Nombre</div><div class="val">Lucía Fernández</div>
+          <div class="divider"></div>
+          <div class="lbl" style="margin-top:0">Email</div><div class="val">lucia@mail.com</div>
+          <div class="divider"></div>
+          <div class="lbl" style="margin-top:0">Ubicacion</div><div class="val">Av. Santa Fe 1234</div>
+        </div>
+        <div class="btn btn-primary">Editar perfil</div>
+        <div class="card" style="background:#F8E6E8;border-color:#E7BFC5;border-radius:16px">
+          <div style="display:flex;align-items:center;gap:8px;color:#B42318"><svg class="ic" style="width:17px;height:17px"><use href="#i-logout"/></svg><b style="font-size:16px">Cerrar sesion</b></div>
+          <div style="color:#7A4950;margin-top:5px;font-size:13px">Salir de esta cuenta</div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Editar perfil</div><div class="file">cliente/perfil/editar.tsx</div>
+      <div class="phone"><div class="screen cliente">
+        <div class="hero"><div class="kicker">Configuracion</div><div class="h1">Editar perfil</div><div class="sub">Actualiza tus datos personales, direccion y seguridad.</div></div>
+        <div class="card">
+          <div class="st"><svg class="ic"><use href="#i-person"/></svg>Datos personales</div>
+          <div class="lbl" style="margin-top:0">Nombre</div><div class="input">Tu nombre</div>
+          <div class="lbl">Email</div><div class="input">Tu email</div>
+        </div>
+        <div class="card">
+          <div class="st"><svg class="ic"><use href="#i-loc"/></svg>Direccion</div>
+          <div class="lbl" style="margin-top:0">Direccion</div><div class="input">Ej: Av Santa Fe 1234</div>
+        </div>
+        <div class="card">
+          <div class="st"><svg class="ic"><use href="#i-lock"/></svg>Seguridad</div>
+          <div style="background:#E6F0FF;border:1px solid #C6DBFF;border-radius:10px;padding:9px 10px;font-size:12px;color:#1E3A8A;font-weight:600">Completa ambos campos solo si queres cambiar la contrasena.</div>
+          <div class="lbl">Nueva contrasena</div><div class="input">••••••••</div>
+          <div class="lbl">Confirmar contrasena</div><div class="input">••••••••</div>
+        </div>
+        <div class="btn btn-primary">Guardar cambios</div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ==================== PROFESIONAL ==================== -->
+  <h2 class="sec" id="pro">Pantallas del Profesional<small>Paleta violeta (diferenciación por rol). Incluye agenda, trabajos, perfil y la tarjeta "Próximo trabajo". Chats se mantienen con estilo compartido.</small></h2>
+  <div class="gallery">
+    <div class="col">
+      <div class="label">Home (próximo trabajo)</div><div class="file">profesional/index.tsx</div>
+      <div class="phone"><div class="screen prof">
+        <div class="hero prof"><div class="h1">Hola, Martín</div><div class="sub">Revisa oportunidades cerca tuyo y organiza tu actividad diaria.</div></div>
+        <div style="background:#F3E8FF;border:1px solid #E9D5FF;border-radius:16px;padding:14px 16px;margin-bottom:16px;box-shadow:0 8px 16px rgba(124,58,237,.16)">
+          <div class="st" style="color:#5B21B6;margin-bottom:10px"><svg class="ic" style="color:#5B21B6"><use href="#i-star"/></svg>Reputacion</div>
+          <div style="display:flex"><div style="flex:1"><div style="color:#6B4BAA;font-size:12px;font-weight:600;text-transform:uppercase">Promedio</div><div style="font-size:26px;font-weight:800;color:#5B21B6">4.8</div></div><div style="width:1px;background:#D7E4F8;margin:0 10px"></div><div style="flex:1"><div style="color:#6B4BAA;font-size:12px;font-weight:600;text-transform:uppercase">Opiniones</div><div style="font-size:26px;font-weight:800;color:#5B21B6">23</div></div></div>
+        </div>
+        <div style="background:#7C3AED;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 14px 18px rgba(124,58,237,.30);color:#fff">
+          <div style="display:flex;align-items:center;gap:6px;color:#F3E8FF;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase"><svg class="ic" style="color:#fff"><use href="#i-cal"/></svg>Proximo trabajo</div>
+          <div style="font-size:20px;font-weight:800;margin-top:8px">Reparación de grifería en baño</div>
+          <div style="color:#EFE4FF;font-size:14px;margin-top:6px">Martes 15 de septiembre</div>
+          <div style="display:flex;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.25)"><b style="font-size:16px">14:30</b><span style="color:#F3E8FF;font-size:13px">Cliente: Lucía Fernández</span></div>
+        </div>
+        <div class="btn btn-primary prof" style="border-radius:18px;padding:20px;text-align:left">
+          <div style="display:flex;align-items:center;gap:8px"><svg class="ic" style="width:18px;height:18px;color:#fff"><use href="#i-flash"/></svg><span style="font-size:19px;font-weight:700">Ver trabajos disponibles</span></div>
+          <div style="font-size:14px;color:#F3E8FF;margin-top:7px;font-weight:500">Explora oportunidades cercanas</div>
+        </div>
+        <div class="card" style="background:#D6F5E8;border-color:#AEE3CD;border-radius:16px">
+          <div class="st" style="color:#0E7A56"><svg class="ic" style="color:#0E7A56"><use href="#i-ana"/></svg>Resumen mensual</div>
+          <div style="display:flex"><div style="flex:1"><div style="font-size:24px;font-weight:800;color:#0E7A56">2</div><div style="font-size:13px;color:#4B7C6A;font-weight:600">En curso</div></div><div style="width:1px;background:#D7E4F8;margin:0 10px"></div><div style="flex:1"><div style="font-size:24px;font-weight:800;color:#0E7A56">5</div><div style="font-size:13px;color:#4B7C6A;font-weight:600">Finalizados este mes</div></div></div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:16px">
+          <div class="card" style="flex:1;background:#E5D7FF;border-color:#D1BCFB;min-height:110px;margin:0"><b style="color:#5B21B6;font-size:17px">Mis trabajos</b><div style="margin-top:6px;color:#5B3D98;font-size:13px">Activos e historial</div></div>
+          <div class="card" style="flex:1;background:#E5D7FF;border-color:#D1BCFB;min-height:110px;margin:0"><b style="color:#5B21B6;font-size:17px">Mi perfil</b><div style="margin-top:6px;color:#5B3D98;font-size:13px">Datos y servicios</div></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Trabajos disponibles</div><div class="file">profesional/trabajos/index.tsx</div>
+      <div class="phone"><div class="screen prof">
+        <div class="hero prof"><div class="kicker">Explorar</div><div class="h1">Trabajos disponibles</div><div class="sub">Encuentra oportunidades cercanas y aplica filtros por prioridad y presupuesto.</div>
+          <div style="margin-top:10px"><span class="pill prof"><svg class="ic"><use href="#i-brief"/></svg>12 resultados</span></div>
+        </div>
+        <div class="chips" style="margin-bottom:14px"><span class="chip prof active">Urgentes</span><span class="chip prof">Todas</span><span class="chip prof">Precio</span><span class="chip prof">Especialidades</span></div>
+        <div class="card" style="background:#FAF7FF;border-color:#E9E1F7;padding:18px">
+          <div style="display:flex;justify-content:space-between;gap:8px"><b style="color:#2A125E;font-size:16px">Reparación de grifería en baño</b><span class="badge b-urgent">Urgente</span></div>
+          <div style="margin-top:6px;color:#4C2D87;font-weight:700;font-size:13px">Especialidad: Plomeria</div>
+          <div style="margin-top:6px;color:#5B3D98;font-size:13.5px;line-height:20px">Pérdida de agua en la canilla de la ducha.</div>
+          <div class="row" style="margin-top:10px"><span class="meta prof"><svg class="ic"><use href="#i-cash"/></svg>$8000 - $15000</span><span class="meta prof"><svg class="ic"><use href="#i-loc"/></svg>2.4 km</span></div>
+        </div>
+        <div class="card" style="background:#FAF7FF;border-color:#E9E1F7;padding:18px">
+          <div style="display:flex;justify-content:space-between;gap:8px"><b style="color:#2A125E;font-size:16px">Instalación de ventilador de techo</b><span class="badge b-indigo">Normal</span></div>
+          <div style="margin-top:6px;color:#4C2D87;font-weight:700;font-size:13px">Especialidad: Electricidad</div>
+          <div style="margin-top:6px;color:#5B3D98;font-size:13.5px;line-height:20px">Colocar y cablear ventilador nuevo en dormitorio.</div>
+          <div class="row" style="margin-top:10px"><span class="meta prof"><svg class="ic"><use href="#i-cash"/></svg>$12000 - $18000</span><span class="meta prof"><svg class="ic"><use href="#i-loc"/></svg>5.1 km</span></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Detalle trabajo · enviar propuesta</div><div class="file">profesional/trabajos/[id].tsx</div>
+      <div class="phone"><div class="screen prof">
+        <div class="hero prof"><div class="kicker">Detalle del trabajo</div><div class="h1">Reparación de grifería en baño</div><div class="sub">Pérdida de agua en la canilla de la ducha. Necesito que la revisen y reparen.</div>
+          <div class="row" style="margin-top:10px"><span class="badge b-purple">Publicado</span><span class="cat prof">Plomeria</span><span class="badge b-urgent">Urgente</span></div>
+          <div style="margin-top:8px;color:#3B0764;font-weight:600;font-size:13px">Cliente: Lucía Fernández</div>
+        </div>
+        <div class="card" style="background:#FAF7FF;border-color:#E9E1F7">
+          <div class="st" style="color:#5B21B6">Detalles</div>
+          <div class="row" style="margin-top:2px"><span class="meta prof"><svg class="ic"><use href="#i-cash"/></svg>$8000 - $15000</span><span class="meta prof"><svg class="ic"><use href="#i-loc"/></svg>Zona: Palermo</span></div>
+          <div style="margin-top:12px"><span class="meta prof"><svg class="ic"><use href="#i-brief"/></svg>2 profesionales ya ofertaron</span></div>
+        </div>
+        <div class="card" style="background:#FAF7FF;border-color:#E9E1F7">
+          <div class="st" style="color:#5B21B6"><svg class="ic"><use href="#i-cash"/></svg>Tu propuesta</div>
+          <div class="lbl" style="margin-top:0">Monto</div><div class="input" style="background:#F3E8FF;border-color:#DDD0FB;color:#2A125E">$ 12000</div>
+          <div class="lbl">Mensaje al cliente</div><div class="textarea" style="background:#F3E8FF;border-color:#DDD0FB;color:#5B3D98">Hola, tengo disponibilidad esta semana. Incluye repuesto de canilla.</div>
+        </div>
+        <div class="btn btn-primary prof">Enviar propuesta</div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Mis trabajos</div><div class="file">profesional/trabajos/misTrabajos.tsx</div>
+      <div class="phone"><div class="screen prof">
+        <div class="hero prof"><div class="kicker">Panel de trabajo</div><div class="h1">Mis trabajos</div><div class="sub">Gestiona los trabajos asignados y revisa tu historial.</div></div>
+        <div class="tabs"><div class="tab prof active">Activos (2)</div><div class="tab prof">Historial (5)</div></div>
+        <div class="card" style="background:#FAF7FF;border-color:#E9E1F7;padding:18px">
+          <div style="display:flex;justify-content:space-between;gap:10px"><b style="color:#2A125E;font-size:16px">Reparación de grifería en baño</b><span class="badge b-purple">Asignado</span></div>
+          <div style="margin-top:8px;color:#5B3D98;font-weight:600;font-size:13.5px">Cliente: Lucía Fernández</div>
+          <div style="margin-top:10px;color:#6B4BAA;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px"><svg class="ic" style="color:#6D28D9"><use href="#i-cal"/></svg>Fecha acordada: 15/9/2026 · 14:30</div>
+        </div>
+        <div class="card" style="background:#FAF7FF;border-color:#E9E1F7;padding:18px">
+          <div style="display:flex;justify-content:space-between;gap:10px"><b style="color:#2A125E;font-size:16px">Pintura de living</b><span class="badge b-green">Finalizado</span></div>
+          <div style="margin-top:8px;color:#5B3D98;font-weight:600;font-size:13.5px">Cliente: Diego Sosa</div>
+          <div style="margin-top:10px;background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;padding:8px 10px;color:#9A3412;font-size:12px;font-weight:600">Valoración registrada</div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Chats</div><div class="file">profesional/chats/index.tsx</div>
+      <div class="phone"><div class="screen white">
+        <div style="display:flex;align-items:center;gap:10px"><div style="font-size:28px;font-weight:800;color:#0F172A">Chats</div><span class="nbadge">1</span></div>
+        <div style="text-align:right;color:#2563EB;font-weight:700;font-size:13px;margin:6px 0 4px">Ver archivados</div>
+        <div class="cchat unread"><div class="avatar">L</div><div class="body"><div class="top"><span class="nm">Lucía Fernández</span><span class="hr">14:22</span></div><div class="job">Reparación de grifería en baño</div><div class="pv" style="color:#1E293B;font-weight:700">Confirmado el martes 14:30.</div></div><span class="nbadge">1</span></div>
+        <div class="cchat"><div class="avatar">D</div><div class="body"><div class="top"><span class="nm">Diego Sosa</span><span class="hr">Lun</span></div><div class="job">Pintura de living</div><div class="pv">Gracias!</div></div></div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Chats archivados</div><div class="file">profesional/chats/archivados.tsx</div>
+      <div class="phone"><div class="screen white">
+        <div style="font-size:28px;font-weight:800;color:#0F172A">Chats archivados</div>
+        <div style="text-align:right;color:#2563EB;font-weight:700;font-size:13px;margin:6px 0 4px">Volver a chats</div>
+        <div class="cchat"><div class="avatar">R</div><div class="body"><div class="top"><span class="nm">Rosa Díaz</span><span class="hr">30 jul</span></div><div class="job">Cambio de termotanque</div><div class="pv">Todo listo, gracias.</div><div style="color:#1D4ED8;font-weight:700;margin-top:8px;font-size:13px">Restaurar chat</div></div></div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Mis valoraciones</div><div class="file">profesional/valoraciones/index.tsx</div>
+      <div class="phone"><div class="screen prof">
+        <div class="hero prof"><div class="kicker">Reputacion</div><div class="h1">Mis valoraciones</div><div class="sub">Opiniones que dejaron los clientes sobre tu trabajo.</div></div>
+        <div style="background:#F3E8FF;border:1px solid #E9D5FF;border-radius:14px;padding:14px 16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:8px;color:#5B21B6;font-weight:800"><svg class="ic" style="color:#5B21B6"><use href="#i-star"/></svg>Promedio: 4.8</div>
+          <div style="margin-top:4px;color:#6B4BAA">Total de valoraciones: 23</div>
+        </div>
+        <div class="card plain" style="background:#FAF7FF;border-color:#E9E1F7;border-radius:12px;padding:12px;margin-bottom:10px"><div style="font-weight:700;color:#2A125E">★ 5</div><div style="margin-top:6px;font-style:italic;color:#5B3D98;font-size:13.5px">"Excelente, muy recomendable."</div></div>
+        <div class="card plain" style="background:#FAF7FF;border-color:#E9E1F7;border-radius:12px;padding:12px"><div style="font-weight:700;color:#2A125E">★ 4</div><div style="margin-top:6px;font-style:italic;color:#5B3D98;font-size:13.5px">"Buen trabajo."</div></div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Mi perfil</div><div class="file">profesional/perfil/index.tsx</div>
+      <div class="phone"><div class="screen prof">
+        <div class="hero prof"><div class="kicker">Perfil profesional</div><div class="h1">Martín Gómez</div><div class="sub">martin@mail.com</div>
+          <div class="row" style="margin-top:10px"><span class="pill prof"><svg class="ic"><use href="#i-star"/></svg>4.8</span><span class="pill prof"><svg class="ic"><use href="#i-shield"/></svg>Cuenta profesional</span></div>
+        </div>
+        <div class="card" style="background:#EAF8EF;border-color:#A7E0BA">
+          <div style="color:#166534;font-weight:800">Suscripcion activa</div>
+          <div style="color:#2E7D32;font-weight:700;margin-top:4px;font-size:13px">Vence el 30/9/2026</div>
+        </div>
+        <div class="card" style="background:#FAF7FF;border-color:#E9E1F7">
+          <div class="st" style="color:#5B21B6">Informacion profesional</div>
+          <div class="lbl" style="margin-top:0">Descripcion</div><div class="val">Plomero matriculado con 10 años de experiencia.</div>
+          <div class="divider" style="background:#E9E1F7"></div>
+          <div class="lbl" style="margin-top:0">Especialidades</div><div class="val">Plomeria, Gas</div>
+        </div>
+        <div class="btn btn-primary prof">Editar perfil</div>
+      </div></div>
+    </div>
+
+    <div class="col">
+      <div class="label">Editar perfil</div><div class="file">profesional/perfil/editar.tsx</div>
+      <div class="phone"><div class="screen prof">
+        <div class="hero prof"><div class="kicker">Configuracion</div><div class="h1">Editar perfil</div><div class="sub">Actualiza tus datos profesionales, ubicacion y acceso.</div></div>
+        <div class="card" style="background:#FAF7FF;border-color:#E9E1F7">
+          <div class="st" style="color:#5B21B6">Datos principales</div>
+          <div class="lbl" style="margin-top:0">Nombre</div><div class="input" style="background:#F3E8FF;border-color:#DDD0FB;color:#2A125E">Tu nombre</div>
+          <div class="lbl">Descripcion profesional</div><div class="textarea" style="background:#F3E8FF;border-color:#DDD0FB;color:#5B3D98">Conta que servicios ofreces...</div>
+        </div>
+        <div class="card" style="background:#FAF7FF;border-color:#E9E1F7">
+          <div class="st" style="color:#5B21B6"><svg class="ic"><use href="#i-loc"/></svg>Ubicacion</div>
+          <div class="lbl" style="margin-top:0">Direccion</div><div class="input" style="background:#F3E8FF;border-color:#DDD0FB;color:#2A125E">Ej: Av Santa Fe 1234</div>
+        </div>
+        <div class="card" style="background:#FAF7FF;border-color:#E9E1F7">
+          <div class="st" style="color:#5B21B6">Especialidades</div>
+          <div class="chips"><span class="chip prof active">Electricidad</span><span class="chip prof active">Plomeria</span><span class="chip prof">Pintura</span></div>
+        </div>
+        <div class="btn btn-primary prof">Guardar cambios</div>
+      </div></div>
+    </div>
+  </div>
+
+</body>
+</html>

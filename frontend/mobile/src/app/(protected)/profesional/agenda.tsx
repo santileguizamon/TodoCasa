@@ -118,7 +118,7 @@ export default function AgendaProfesionalScreen() {
   if (loading) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color="#2563EB" />
+        <ActivityIndicator size="large" color="#7C3AED" />
       </View>
     )
   }
@@ -154,7 +154,7 @@ export default function AgendaProfesionalScreen() {
                     )
                   }
                 >
-                  <Ionicons name="chevron-back" size={18} color="#1E3A8A" />
+                  <Ionicons name="chevron-back" size={18} color="#5B21B6" />
                 </Pressable>
 
                 <Text style={styles.monthTitle}>
@@ -169,7 +169,7 @@ export default function AgendaProfesionalScreen() {
                     )
                   }
                 >
-                  <Ionicons name="chevron-forward" size={18} color="#1E3A8A" />
+                  <Ionicons name="chevron-forward" size={18} color="#5B21B6" />
                 </Pressable>
               </View>
 
@@ -252,6 +252,12 @@ export default function AgendaProfesionalScreen() {
                 </View>
 
                 <Text style={styles.cardMeta}>
+                  {trabajo.fechaAcordada
+                    ? `${new Date(trabajo.fechaAcordada).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })} · `
+                    : ''}
                   Cliente: {trabajo.cliente?.nombre || 'No informado'}
                 </Text>
               </Pressable>

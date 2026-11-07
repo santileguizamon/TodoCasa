@@ -9,13 +9,18 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtSignOptions } from '@nestjs/jwt';
+import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class AuthService {
+  private googleClient: OAuth2Client;
+
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-  ) {}
+  ) {
+    this.googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+  }
 
   /**
    * 🆕 Registro usuario
@@ -247,6 +252,119 @@ const refreshOptions: JwtSignOptions = {
 
     return {
       message: 'Sesión cerrada correctamente',
+    };
+  }
+
+  /**
+   * 🔐 Google Auth: valida ID token, busca/crea usuario, retorna JWT + estado suscripción
+   */
+  async googleLogin(idToken: string, rol: 'CLIENTE' | 'PROFESIONAL' = 'CLIENTE') {
+    const ticket = await this.googleClient.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    if (!payload || !payload.email) {
+      throw new UnauthorizedException('Token de Google inválido');
+    }
+
+    const email = payload.email;
+    const nombre = payload.name ?? email.split('@')[0];
+    const googleId = payload.sub;
+    const picture = payload.picture;
+
+    // Buscar usuario existente por email
+    let usuario = await this.prisma.usuario.findUnique({
+      where: { email },
+      include: { profesional: true, suscripcion: true },
+    });
+
+    if (!usuario) {
+      // Crear nuevo usuario
+      const hash = await bcrypt.hash(googleId, 10); // hash del googleId como password placeholder
+      usuario = await this.prisma.usuario.create({
+        data: {
+          nombre,
+          email,
+          password: hash,
+          rol,
+          activo: true,
+          verificado: true, // Google ya verificó el email
+        },
+        include: { profesional: true, suscripcion: true },
+      });
+
+      if (rol === 'PROFESIONAL') {
+        await this.prisma.profesional.create({
+          data: {
+            idUsuario: usuario.id,
+            descripcion: '',
+            valorHora: 0,
+            extraUrgencia: 1.5,
+          },
+        });
+        // Recargar con profesional incluido
+        usuario = await this.prisma.usuario.findUnique({
+          where: { id: usuario.id },
+          include: { profesional: true, suscripcion: true },
+        });
+      }
+    } else {
+      // Usuario existe: si viene como PROFESIONAL pero no lo es, actualizar rol y crear perfil
+      if (rol === 'PROFESIONAL' && usuario.rol !== 'PROFESIONAL') {
+        await this.prisma.usuario.update({
+          where: { id: usuario.id },
+          data: { rol: 'PROFESIONAL' },
+        });
+        if (!usuario.profesional) {
+          await this.prisma.profesional.create({
+            data: {
+              idUsuario: usuario.id,
+              descripcion: '',
+              valorHora: 0,
+              extraUrgencia: 1.5,
+            },
+          });
+        }
+        usuario = await this.prisma.usuario.findUnique({
+          where: { id: usuario.id },
+          include: { profesional: true, suscripcion: true },
+        });
+      }
+    }
+
+    // Generar tokens
+    const tokens = await this.generarTokens(usuario.id, usuario.email, usuario.rol);
+    await this.guardarRefreshToken(usuario.id, tokens.refresh_token);
+
+    // Calcular estado de suscripción para profesionales
+    let suscripcionEstado: 'ACTIVA' | 'VENCIDA' | 'SIN_SUSCRIPCION' | null = null;
+    if (usuario.rol === 'PROFESIONAL') {
+      const suscripcion = usuario.suscripcion;
+      if (!suscripcion) {
+        suscripcionEstado = 'SIN_SUSCRIPCION';
+      } else if (!suscripcion.activa || (suscripcion.fechaFin && new Date(suscripcion.fechaFin) < new Date())) {
+        suscripcionEstado = 'VENCIDA';
+      } else {
+        suscripcionEstado = 'ACTIVA';
+      }
+    }
+
+    return {
+      message: 'Inicio de sesión con Google exitoso',
+      user: {
+        id: usuario.id,
+        nombre: usuario.nombre,
+        email: usuario.email,
+        rol: usuario.rol,
+        direccion: usuario.direccion ?? null,
+        lat: usuario.lat ?? null,
+        lng: usuario.lng ?? null,
+        verificado: usuario.verificado,
+        suscripcionEstado,
+      },
+      ...tokens,
     };
   }
 }

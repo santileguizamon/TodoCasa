@@ -239,6 +239,73 @@ export class TrabajosService {
     });
   }
 
+  // 📅 Definir fecha acordada (cliente agenda) — con validación de solape
+  private readonly DURACION_TURNO_MIN = 90;
+
+  async definirFechaAcordada(
+    trabajoId: number,
+    clienteId: number,
+    fecha: Date,
+    cantidadTurnos: number = 1,
+  ) {
+    if (![1, 2].includes(cantidadTurnos)) {
+      throw new BadRequestException('cantidadTurnos debe ser 1 o 2');
+    }
+
+    const trabajo = await this.prisma.trabajo.findUnique({
+      where: { id: trabajoId },
+      include: { chat: true, ofertas: { where: { aceptada: true }, take: 1 } },
+    });
+
+    if (!trabajo) throw new NotFoundException('Trabajo no encontrado');
+    if (trabajo.clienteId !== clienteId)
+      throw new ForbiddenException('Solo el cliente puede definir la fecha');
+    if (trabajo.estado !== EstadoTrabajo.ASIGNADO)
+      throw new BadRequestException('El trabajo debe estar ASIGNADO para agendar');
+    if (trabajo.fechaAcordada)
+      throw new BadRequestException('La fecha ya fue acordada');
+
+    const chat = trabajo.chat;
+    if (!chat) throw new BadRequestException('No hay chat asociado al trabajo');
+    const profesionalId = chat.profesionalId;
+
+    const inicio = new Date(fecha);
+    const fin = new Date(inicio.getTime() + cantidadTurnos * this.DURACION_TURNO_MIN * 60 * 1000);
+
+    const trabajosProfesional = await this.prisma.trabajo.findMany({
+      where: {
+        chat: { profesionalId },
+        estado: { in: [EstadoTrabajo.ASIGNADO, EstadoTrabajo.PENDIENTE_CONFIRMACION] },
+        fechaAcordada: { not: null },
+        id: { not: trabajoId },
+      },
+      select: { fechaAcordada: true },
+    });
+
+    for (const t of trabajosProfesional) {
+      const existenteInicio = new Date(t.fechaAcordada!);
+      const existenteFin = new Date(existenteInicio.getTime() + this.DURACION_TURNO_MIN * 60 * 1000);
+      if (inicio < existenteFin && fin > existenteInicio) {
+        throw new BadRequestException(
+          'El profesional ya tiene un trabajo en ese horario. Elige otro horario.',
+        );
+      }
+    }
+
+    await this.prisma.trabajo.update({
+      where: { id: trabajoId },
+      data: { fechaAcordada: fecha },
+    });
+
+    await this.notificacionesService.crear({
+      usuarioId: profesionalId,
+      tipo: TipoNotificacion.OFERTA_ACEPTADA,
+      mensaje: `Nueva fecha acordada para "${trabajo.titulo}": ${fecha.toLocaleString('es-AR')} (${cantidadTurnos} turno${cantidadTurnos > 1 ? 's' : ''}).`,
+    });
+
+    return { ok: true };
+  }
+
   // 🔄 Cambiar estado
   async cambiarEstado(id: number, estado: EstadoTrabajo) {
     const trabajo = await this.prisma.trabajo.findUnique({ where: { id } });

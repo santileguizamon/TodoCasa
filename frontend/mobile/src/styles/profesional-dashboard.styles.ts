@@ -1,9 +1,12 @@
 import { StyleSheet } from "react-native";
+import { ROLE_COLORS } from "../theme";
+
+const P = ROLE_COLORS.PROFESIONAL;
 
 export const profesionalDashboardStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#EAF2FF",
+    backgroundColor: "#F4EFFF",
   },
   content: {
     paddingHorizontal: 18,
@@ -13,17 +16,17 @@ export const profesionalDashboardStyles = StyleSheet.create({
   },
   header: {
     marginBottom: 2,
-    backgroundColor: "#C7DBFF",
+    backgroundColor: "#E2D4FF",
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: "#AFC9F9",
+    borderColor: "#D1BCFB",
   },
   headerKicker: {
     fontSize: 12,
     fontWeight: "700",
-    color: "#27538D",
+    color: "#4C2D87",
     letterSpacing: 0.8,
     textTransform: "uppercase",
   },
@@ -31,21 +34,21 @@ export const profesionalDashboardStyles = StyleSheet.create({
     marginTop: 6,
     fontSize: 26,
     fontWeight: "800",
-    color: "#0F2A52",
+    color: "#2A125E",
   },
   headerSubtitle: {
     marginTop: 6,
-    color: "#3D628F",
+    color: "#5B3D98",
     lineHeight: 20,
   },
   summaryCard: {
-    backgroundColor: "#DCEBFF",
+    backgroundColor: P.primarySoft,
     borderRadius: 16,
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: "#BFD8FF",
-    shadowColor: "#2563EB",
+    borderColor: P.primaryBorder,
+    shadowColor: P.primary,
     shadowOpacity: 0.16,
     shadowRadius: 16,
     elevation: 4,
@@ -53,7 +56,7 @@ export const profesionalDashboardStyles = StyleSheet.create({
   cardTitle: {
     fontSize: 13,
     fontWeight: "800",
-    color: "#1E3A8A",
+    color: P.accent,
     textTransform: "uppercase",
     letterSpacing: 0.4,
   },
@@ -83,7 +86,7 @@ export const profesionalDashboardStyles = StyleSheet.create({
     flex: 1,
   },
   summaryLabel: {
-    color: "#4C6FA5",
+    color: "#6B4BAA",
     fontSize: 12,
     marginBottom: 4,
     textTransform: "uppercase",
@@ -93,7 +96,7 @@ export const profesionalDashboardStyles = StyleSheet.create({
   summaryValue: {
     fontSize: 26,
     fontWeight: "800",
-    color: "#10386E",
+    color: P.accent,
   },
   activityCard: {
     backgroundColor: "#D6F5E8",
@@ -152,11 +155,11 @@ export const profesionalDashboardStyles = StyleSheet.create({
     marginTop: 4,
   },
   ctaMain: {
-    backgroundColor: "#2563EB",
+    backgroundColor: P.primary,
     borderRadius: 18,
     paddingHorizontal: 20,
     paddingVertical: 20,
-    shadowColor: "#2563EB",
+    shadowColor: P.primary,
     shadowOpacity: 0.3,
     shadowRadius: 20,
     elevation: 8,
@@ -173,8 +176,75 @@ export const profesionalDashboardStyles = StyleSheet.create({
   },
   ctaMainText: {
     marginTop: 7,
-    color: "#DBEAFE",
+    color: "#F3E8FF",
     fontSize: 14,
+  },
+  proximoCard: {
+    backgroundColor: P.primary,
+    borderRadius: 18,
+    padding: 18,
+    shadowColor: P.primary,
+    shadowOpacity: 0.3,
+    shadowRadius: 18,
+    elevation: 7,
+  },
+  proximoKicker: {
+    color: "#F3E8FF",
+    fontSize: 12,
+    fontWeight: "800",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+  },
+  proximoHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  proximoTitle: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontWeight: "800",
+    marginTop: 8,
+  },
+  proximoDetail: {
+    color: "#EFE4FF",
+    fontSize: 14,
+    marginTop: 6,
+    textTransform: "capitalize",
+  },
+  proximoFooter: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 14,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(255,255,255,0.25)",
+  },
+  proximoTime: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "800",
+  },
+  proximoCliente: {
+    color: "#F3E8FF",
+    fontSize: 13,
+    flexShrink: 1,
+  },
+  proximoVacio: {
+    backgroundColor: "#EFE4FF",
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#D1BCFB",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  proximoVacioText: {
+    color: "#4C2D87",
+    fontWeight: "700",
+    flex: 1,
   },
   grid: {
     flexDirection: "row",
@@ -192,8 +262,8 @@ export const profesionalDashboardStyles = StyleSheet.create({
     elevation: 4,
   },
   quickCardSky: {
-    backgroundColor: "#CFE2FF",
-    borderColor: "#AFCBFF",
+    backgroundColor: "#E5D7FF",
+    borderColor: "#D1BCFB",
   },
   quickCardMint: {
     backgroundColor: "#CFF2E2",
@@ -202,7 +272,7 @@ export const profesionalDashboardStyles = StyleSheet.create({
   quickTitle: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#10386E",
+    color: P.accent,
   },
   quickTitleRow: {
     flexDirection: "row",
@@ -211,7 +281,7 @@ export const profesionalDashboardStyles = StyleSheet.create({
   },
   quickText: {
     marginTop: 6,
-    color: "#365D8F",
+    color: "#5B3D98",
     lineHeight: 19,
   },
   logoutCard: {

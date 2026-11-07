@@ -11,6 +11,8 @@ export interface AuthResponse {
     direccion?: string | null
     lat?: number | null
     lng?: number | null
+    verificado?: boolean
+    suscripcionEstado?: 'ACTIVA' | 'VENCIDA' | 'SIN_SUSCRIPCION' | null
   }
 }
 

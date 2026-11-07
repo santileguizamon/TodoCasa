@@ -245,8 +245,43 @@ export const chatScreenStyles = StyleSheet.create({
   modalSecondaryButton: {
     marginTop: 8,
   },
-  modalSecondaryText: {
+modalSecondaryText: {
     textAlign: "center",
     color: "#64748B",
+  },
+  turnosRow: {
+    marginTop: 12,
+  },
+  turnosLabel: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#64748B",
+    textTransform: "uppercase",
+    letterSpacing: 0.4,
+    marginBottom: 8,
+  },
+  turnosOptions: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  turnosOption: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#D6E2F5",
+    backgroundColor: "#F8FAFF",
+    alignItems: "center",
+  },
+  turnosOptionSelected: {
+    borderColor: "#2563EB",
+    backgroundColor: "#E6F0FF",
+  },
+  turnosOptionText: {
+    fontWeight: "800",
+    color: "#64748B",
+  },
+  turnosOptionTextSelected: {
+    color: "#1E3A8A",
   },
 });

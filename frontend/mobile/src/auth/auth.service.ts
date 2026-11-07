@@ -11,6 +11,16 @@ export async function login(
   });
 }
 
+export async function googleLogin(
+  idToken: string,
+  rol: 'CLIENTE' | 'PROFESIONAL',
+): Promise<AuthResponse> {
+  return apiFetch('/auth/google', {
+    method: 'POST',
+    body: JSON.stringify({ idToken, rol }),
+  });
+}
+
 export async function me(token: string) {
   return apiFetch('/auth/me', {}, token);
 }

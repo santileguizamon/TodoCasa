@@ -3,13 +3,13 @@ import { StyleSheet } from 'react-native'
 export const profesionalAgendaStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F6FC',
+    backgroundColor: '#F4EFFF',
   },
   loader: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F3F6FC',
+    backgroundColor: '#F4EFFF',
   },
   content: {
     paddingHorizontal: 16,
@@ -20,15 +20,15 @@ export const profesionalAgendaStyles = StyleSheet.create({
     paddingBottom: 12,
   },
   heroCard: {
-    backgroundColor: '#DCEBFF',
+    backgroundColor: '#E2D4FF',
     borderRadius: 18,
     paddingHorizontal: 16,
     paddingVertical: 14,
     borderWidth: 1,
-    borderColor: '#BFD5F8',
+    borderColor: '#D1BCFB',
   },
   heroKicker: {
-    color: '#1E3A8A',
+    color: '#4C2D87',
     fontSize: 11,
     fontWeight: '700',
     textTransform: 'uppercase',
@@ -36,13 +36,13 @@ export const profesionalAgendaStyles = StyleSheet.create({
   },
   heroTitle: {
     marginTop: 4,
-    color: '#0F172A',
+    color: '#2A125E',
     fontSize: 22,
     fontWeight: '800',
   },
   heroSubtitle: {
     marginTop: 4,
-    color: '#334155',
+    color: '#5B3D98',
     fontSize: 14,
   },
   calendarCard: {
@@ -50,7 +50,7 @@ export const profesionalAgendaStyles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#D9E5F7',
+    borderColor: '#E9E1F7',
     paddingHorizontal: 12,
     paddingVertical: 12,
   },
@@ -64,12 +64,12 @@ export const profesionalAgendaStyles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: '#EAF1FE',
+    backgroundColor: '#F3E8FF',
     alignItems: 'center',
     justifyContent: 'center',
   },
   monthTitle: {
-    color: '#0F172A',
+    color: '#2A125E',
     fontSize: 16,
     fontWeight: '800',
   },
@@ -80,7 +80,7 @@ export const profesionalAgendaStyles = StyleSheet.create({
   weekDayText: {
     flex: 1,
     textAlign: 'center',
-    color: '#64748B',
+    color: '#6B4BAA',
     fontSize: 12,
     fontWeight: '700',
   },
@@ -99,21 +99,21 @@ export const profesionalAgendaStyles = StyleSheet.create({
     opacity: 0.45,
   },
   dayCellSelected: {
-    backgroundColor: '#DBEAFE',
+    backgroundColor: '#E9D5FF',
   },
   dayNumber: {
-    color: '#0F172A',
+    color: '#2A125E',
     fontSize: 13,
     fontWeight: '700',
   },
   dayNumberOutside: {
-    color: '#94A3B8',
+    color: '#A78BFA',
   },
   dayNumberSelected: {
-    color: '#1E3A8A',
+    color: '#5B21B6',
   },
   dayNumberToday: {
-    color: '#2563EB',
+    color: '#7C3AED',
   },
   dotWrap: {
     marginTop: 2,
@@ -125,11 +125,11 @@ export const profesionalAgendaStyles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 3,
-    backgroundColor: '#2563EB',
+    backgroundColor: '#7C3AED',
   },
   dotCount: {
     fontSize: 10,
-    color: '#1E40AF',
+    color: '#6D28D9',
     fontWeight: '700',
   },
   dayBlock: {
@@ -137,14 +137,14 @@ export const profesionalAgendaStyles = StyleSheet.create({
     gap: 10,
   },
   dayTitle: {
-    color: '#1E293B',
+    color: '#3B0764',
     fontSize: 15,
     fontWeight: '800',
   },
   card: {
-    backgroundColor: '#EEF3FB',
+    backgroundColor: '#F7F3FE',
     borderWidth: 1,
-    borderColor: '#D9E5F7',
+    borderColor: '#E9E1F7',
     borderRadius: 14,
     paddingHorizontal: 14,
     paddingVertical: 12,
@@ -157,24 +157,24 @@ export const profesionalAgendaStyles = StyleSheet.create({
   },
   cardTitle: {
     flex: 1,
-    color: '#0F172A',
+    color: '#2A125E',
     fontSize: 15,
     fontWeight: '700',
   },
   badge: {
-    backgroundColor: '#DBEAFE',
+    backgroundColor: '#E9D5FF',
     borderRadius: 999,
     paddingHorizontal: 10,
     paddingVertical: 4,
   },
   badgeText: {
-    color: '#1E40AF',
+    color: '#6D28D9',
     fontSize: 12,
     fontWeight: '700',
   },
   cardMeta: {
     marginTop: 7,
-    color: '#475569',
+    color: '#6B4BAA',
     fontSize: 13,
   },
   emptyCard: {
@@ -189,13 +189,13 @@ export const profesionalAgendaStyles = StyleSheet.create({
     gap: 8,
   },
   emptyTitle: {
-    color: '#0F172A',
+    color: '#2A125E',
     fontWeight: '700',
     fontSize: 15,
   },
   emptyText: {
     textAlign: 'center',
-    color: '#64748B',
+    color: '#6B4BAA',
     fontSize: 13,
   },
 })

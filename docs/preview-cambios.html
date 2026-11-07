@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TodoCasa · Preview de cambios estéticos</title>
+<style>
+  :root{
+    --prof-primary:#7C3AED;
+    --prof-soft:#F3E8FF;
+    --prof-border:#E9D5FF;
+    --prof-accent:#5B21B6;
+    --cli-primary:#2563EB;
+    --cli-accent:#1E3A8A;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    padding:40px 20px 80px;
+    background:#0b1220;
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:#e2e8f0;
+  }
+  h1{
+    text-align:center;
+    font-size:22px;
+    font-weight:800;
+    margin:0 0 6px;
+    color:#fff;
+  }
+  .lead{
+    text-align:center;
+    color:#94a3b8;
+    margin:0 0 36px;
+    font-size:14px;
+  }
+  .gallery{
+    display:flex;
+    flex-wrap:wrap;
+    gap:40px;
+    justify-content:center;
+    align-items:flex-start;
+  }
+  .col{width:390px}
+  .col > .label{
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:#94a3b8;
+    margin:0 0 10px 6px;
+  }
+  .col > .file{
+    font-size:11px;
+    color:#64748b;
+    margin:-6px 0 12px 6px;
+    font-family:Consolas,monospace;
+  }
+  .phone{
+    width:100%;
+    border-radius:32px;
+    overflow:hidden;
+    padding:26px 18px 34px;
+    box-shadow:0 30px 60px rgba(0,0,0,.55), 0 0 0 8px #1e293b;
+  }
+  .phone.cliente{background:#EAF2FF}
+  .phone.prof{background:#F4EFFF}
+
+  /* ================= PROFESIONAL HOME ================= */
+  .pd-header{
+    background:#E2D4FF;
+    border:1px solid #D1BCFB;
+    border-radius:16px;
+    padding:12px 14px;
+    margin-bottom:18px;
+  }
+  .pd-header-title{font-size:26px;font-weight:800;color:#2A125E;margin-top:6px}
+  .pd-header-sub{margin-top:6px;color:#5B3D98;line-height:20px;font-size:14px}
+
+  .pd-summary{
+    background:var(--prof-soft);
+    border:1px solid var(--prof-border);
+    border-radius:16px;
+    padding:14px 16px;
+    margin-bottom:18px;
+    box-shadow:0 8px 16px rgba(124,58,237,.16);
+  }
+  .pd-title-row{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+  .pd-card-title{
+    font-size:13px;font-weight:800;color:var(--prof-accent);
+    text-transform:uppercase;letter-spacing:.4px;
+  }
+  .pd-summary-row{display:flex;align-items:center;justify-content:space-between}
+  .pd-summary-item{flex:1}
+  .pd-summary-label{
+    color:#6B4BAA;font-size:12px;margin-bottom:4px;text-transform:uppercase;
+    letter-spacing:.5px;font-weight:600;
+  }
+  .pd-summary-value{font-size:26px;font-weight:800;color:var(--prof-accent)}
+  .pd-divider{width:1px;height:42px;background:#D7E4F8;margin:0 10px}
+
+  /* --- tarjeta NUEVA: Próximo trabajo --- */
+  .pd-proximo{
+    background:var(--prof-primary);
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:18px;
+    box-shadow:0 14px 18px rgba(124,58,237,.30);
+  }
+  .pd-proximo-header{display:flex;align-items:center;gap:6px}
+  .pd-proximo-kicker{
+    color:#F3E8FF;font-size:12px;font-weight:800;
+    letter-spacing:1px;text-transform:uppercase;
+  }
+  .pd-proximo-title{color:#fff;font-size:20px;font-weight:800;margin-top:8px}
+  .pd-proximo-detail{color:#EFE4FF;font-size:14px;margin-top:6px;text-transform:capitalize}
+  .pd-proximo-footer{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.25);
+  }
+  .pd-proximo-time{color:#fff;font-size:16px;font-weight:800}
+  .pd-proximo-cliente{color:#F3E8FF;font-size:13px}
+
+  /* --- variante SIN trabajos --- */
+  .pd-proximo-vacio{
+    display:flex;align-items:center;gap:10px;
+    background:#EFE4FF;border:1px solid #D1BCFB;border-radius:16px;
+    padding:16px;margin-bottom:18px;
+  }
+  .pd-proximo-vacio-text{color:#4C2D87;font-weight:700;flex:1;font-size:14px}
+
+  .pd-cta{
+    background:var(--prof-primary);border-radius:18px;padding:20px;margin-bottom:18px;
+    box-shadow:0 16px 20px rgba(124,58,237,.30);
+  }
+  .pd-cta-row{display:flex;align-items:center;gap:8px}
+  .pd-cta-title{color:#fff;font-size:19px;font-weight:700}
+  .pd-cta-text{margin-top:7px;color:#F3E8FF;font-size:14px}
+
+  .pd-activity{
+    background:#D6F5E8;border:1px solid #AEE3CD;border-radius:16px;padding:14px 16px;
+    box-shadow:0 8px 14px rgba(5,150,105,.14);
+  }
+  .pd-section-title{
+    font-size:13px;font-weight:700;color:#0E7A56;margin-bottom:10px;
+    text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:6px;
+  }
+  .pd-activity-row{display:flex;align-items:center;justify-content:space-between}
+  .pd-activity-item{flex:1}
+  .pd-activity-number{font-size:24px;font-weight:800;color:#0E7A56}
+  .pd-activity-label{margin-top:4px;font-size:13px;color:#4B7C6A;font-weight:600}
+
+  /* ================= CLIENTE: OFERTAS ================= */
+  .cd-hero{
+    background:#DCEBFF;border:1px solid #BED5FF;border-radius:16px;padding:16px;margin-bottom:16px;
+  }
+  .cd-kicker{font-size:11px;font-weight:800;color:#27538D;text-transform:uppercase;letter-spacing:.6px}
+  .cd-titulo{margin-top:4px;font-size:22px;font-weight:800;color:#0F2A52}
+  .cd-desc{margin-top:8px;color:#365D8F;line-height:19px;font-size:14px}
+  .cd-meta-row{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .cd-badge{border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800}
+  .cd-badge.estado{background:#DBEAFE;color:#1E3A8A}
+  .cd-badge.rango{background:#E6F0FF;border:1px solid #C6DBFF;color:#1E3A8A}
+
+  .cd-section{
+    background:#F7FAFF;border:1px solid #D6E2F5;border-radius:12px;padding:16px;
+    box-shadow:0 6px 10px rgba(37,99,235,.08);
+  }
+  .cd-section-title{color:#173A6B;font-weight:800;font-size:16px;margin:0 0 8px}
+
+  .offer{
+    background:#fff;border:1px solid #D8E6FF;border-radius:12px;
+    padding:12px;margin-top:10px;
+  }
+  .offer-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .offer-pro{display:flex;align-items:center;gap:6px;flex:1;flex-wrap:wrap;min-width:0}
+  .offer-name{color:#1E3A8A;font-weight:700}
+  .offer-verified{
+    display:flex;align-items:center;gap:3px;background:#DCFCE7;
+    border:1px solid #BBF7D0;border-radius:999px;padding:3px 7px;
+  }
+  .offer-verified-text{color:#047857;font-weight:700;font-size:11px}
+  .offer-amount{color:#0F2A52;font-weight:800;font-size:18px}
+  .offer-rating{margin-top:6px;color:#3D628F;font-weight:600;font-size:14px}
+  .offer-comment{margin-top:4px;color:#5A769B;font-style:italic;font-size:13px}
+  .offer-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .btn-secondary{
+    background:#E6F0FF;border:1px solid #C6DBFF;border-radius:12px;
+    padding:10px;text-align:center;color:#1E3A8A;font-weight:700;font-size:14px;
+  }
+  .btn-primary{
+    background:#2563EB;border-radius:12px;padding:10px;text-align:center;
+    color:#fff;font-weight:700;font-size:14px;
+  }
+
+  /* ================= PERFIL PÚBLICO ================= */
+  .pp-hero{
+    background:#C7DBFF;border:1px solid #AFC9F9;border-radius:16px;padding:14px;
+    box-shadow:0 8px 12px rgba(37,99,235,.12);margin-bottom:16px;
+  }
+  .pp-kicker{font-size:11px;font-weight:800;color:#27538D;text-transform:uppercase;letter-spacing:.6px}
+  .pp-title{margin-top:4px;font-size:22px;font-weight:800;color:#0F2A52}
+  .pp-sub{margin-top:4px;color:#3F628E;font-weight:600;font-size:14px}
+  .pp-meta{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .pp-pill{
+    display:flex;align-items:center;gap:6px;background:#EDF5FF;
+    border:1px solid #C8DCFF;border-radius:999px;padding:6px 10px;
+    color:#1D4ED8;font-weight:700;font-size:12px;
+  }
+  .pp-pill.verified{background:#DCFCE7;border-color:#BBF7D0;color:#047857}
+  .pp-pill.pending{background:#FFF7ED;border-color:#FED7AA;color:#B45309}
+</style>
+</head>
+<body>
+  <h1>TodoCasa · Preview de cambios estéticos</h1>
+  <p class="lead">Mock fiel a los estilos reales (React Native). Abrilo en el navegador. No es la app real.</p>
+
+  <div class="gallery">
+
+    <!-- PROFESIONAL HOME CON TRABAJO -->
+    <div class="col">
+      <div class="label">Profesional · Home</div>
+      <div class="file">profesional/index.tsx + profesional-dashboard.styles.ts</div>
+      <div class="phone prof">
+        <div class="pd-header">
+          <div class="pd-header-title">Hola, Martín</div>
+          <div class="pd-header-sub">Revisa oportunidades cerca tuyo y organiza tu actividad diaria.</div>
+        </div>
+
+        <div class="pd-summary">
+          <div class="pd-title-row">
+            <span style="color:#1E3A8A">★</span>
+            <span class="pd-card-title">Reputación</span>
+          </div>
+          <div class="pd-summary-row">
+            <div class="pd-summary-item">
+              <div class="pd-summary-label">Promedio</div>
+              <div class="pd-summary-value">4.8</div>
+            </div>
+            <div class="pd-divider"></div>
+            <div class="pd-summary-item">
+              <div class="pd-summary-label">Opiniones</div>
+              <div class="pd-summary-value">23</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NUEVA TARJETA -->
+        <div class="pd-proximo">
+          <div class="pd-proximo-header">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="pd-proximo-kicker">Próximo trabajo</span>
+          </div>
+          <div class="pd-proximo-title">Reparación de grifería en baño</div>
+          <div class="pd-proximo-detail">Martes 15 de septiembre</div>
+          <div class="pd-proximo-footer">
+            <span class="pd-proximo-time">14:30</span>
+            <span class="pd-proximo-cliente">Cliente: Lucía Fernández</span>
+          </div>
+        </div>
+
+        <div class="pd-cta">
+          <div class="pd-cta-row">
+            <span style="color:#fff">⚡</span>
+            <span class="pd-cta-title">Ver trabajos disponibles</span>
+          </div>
+          <div class="pd-cta-text">Explora oportunidades cercanas</div>
+        </div>
+
+        <div class="pd-activity">
+          <div class="pd-section-title">
+            <span>↗</span> Resumen mensual
+          </div>
+          <div class="pd-activity-row">
+            <div class="pd-activity-item">
+              <div class="pd-activity-number">2</div>
+              <div class="pd-activity-label">En curso</div>
+            </div>
+            <div class="pd-divider"></div>
+            <div class="pd-activity-item">
+              <div class="pd-activity-number">5</div>
+              <div class="pd-activity-label">Finalizados este mes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFESIONAL HOME SIN TRABAJOS -->
+    <div class="col">
+      <div class="label">Profesional · Home sin agendados</div>
+      <div class="file">variante vacía de la tarjeta</div>
+      <div class="phone prof">
+        <div class="pd-header">
+          <div class="pd-header-title">Hola, Sofía</div>
+          <div class="pd-header-sub">Revisa oportunidades cerca tuyo y organiza tu actividad diaria.</div>
+        </div>
+
+        <div class="pd-summary">
+          <div class="pd-title-row">
+            <span style="color:#1E3A8A">★</span>
+            <span class="pd-card-title">Reputación</span>
+          </div>
+          <div class="pd-summary-row">
+            <div class="pd-summary-item">
+              <div class="pd-summary-label">Promedio</div>
+              <div class="pd-summary-value">—</div>
+            </div>
+            <div class="pd-divider"></div>
+            <div class="pd-summary-item">
+              <div class="pd-summary-label">Opiniones</div>
+              <div class="pd-summary-value">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pd-proximo-vacio">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4C2D87" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span class="pd-proximo-vacio-text">No tenes trabajos proximos agendados. Miralo en tu agenda.</span>
+        </div>
+
+        <div class="pd-cta">
+          <div class="pd-cta-row">
+            <span style="color:#fff">⚡</span>
+            <span class="pd-cta-title">Ver trabajos disponibles</span>
+          </div>
+          <div class="pd-cta-text">Explora oportunidades cercanas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTE OFERTAS -->
+    <div class="col">
+      <div class="label">Cliente · Ofertas recibidas</div>
+      <div class="file">cliente/trabajo/[id].tsx + trabajo-detalle.styles.ts</div>
+      <div class="phone cliente">
+        <div class="cd-hero">
+          <div class="cd-kicker">Detalle del trabajo</div>
+          <div class="cd-titulo">Reparación de grifería en baño</div>
+          <div class="cd-desc">Pérdida de agua en la canilla de la ducha. Necesito que la revisen y reparen.</div>
+          <div class="cd-meta-row">
+            <span class="cd-badge estado">Publicado</span>
+            <span class="cd-badge rango">$8000 - $15000</span>
+          </div>
+        </div>
+
+        <div class="cd-section">
+          <div class="cd-section-title">Ofertas recibidas</div>
+
+          <!-- oferta verificada -->
+          <div class="offer">
+            <div class="offer-top">
+              <div class="offer-pro">
+                <span class="offer-name">Martín Gómez</span>
+                <span class="offer-verified">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+                  <span class="offer-verified-text">Verificado</span>
+                </span>
+              </div>
+              <span class="offer-amount">$12000</span>
+            </div>
+            <div class="offer-rating">★ 4.8 · 23 opiniones</div>
+            <div class="offer-comment">"Muy prolijo y puntual, solucionó todo en el día."</div>
+            <div class="offer-comment">"Excelente trabajo, lo recomiendo."</div>
+            <div class="offer-actions">
+              <div class="btn-secondary">Ver perfil</div>
+              <div class="btn-primary">Aceptar oferta</div>
+            </div>
+          </div>
+
+          <!-- oferta sin verificar -->
+          <div class="offer">
+            <div class="offer-top">
+              <div class="offer-pro">
+                <span class="offer-name">Jorge Pérez</span>
+              </div>
+              <span class="offer-amount">$9500</span>
+            </div>
+            <div class="offer-rating">Sin valoraciones</div>
+            <div class="offer-actions">
+              <div class="btn-secondary">Ver perfil</div>
+              <div class="btn-primary">Aceptar oferta</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERFIL PÚBLICO -->
+    <div class="col">
+      <div class="label">Cliente · Perfil del profesional</div>
+      <div class="file">cliente/profesional/[id].tsx + perfil-profesional-publico.styles.ts</div>
+      <div class="phone cliente">
+        <div class="pp-hero">
+          <div class="pp-kicker">Perfil profesional</div>
+          <div class="pp-title">Martín Gómez</div>
+          <div class="pp-sub">martin.gomez@mail.com</div>
+          <div class="pp-meta">
+            <span class="pp-pill">
+              <span>★</span> ★ 4.8 · 23 opiniones
+            </span>
+            <span class="pp-pill verified">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+              Profesional verificado
+            </span>
+          </div>
+        </div>
+
+        <!-- variante pendiente -->
+        <div class="pp-hero" style="background:#F7FAFF;border-color:#D6E2F5">
+          <div class="pp-kicker">Perfil profesional</div>
+          <div class="pp-title">Jorge Pérez</div>
+          <div class="pp-sub">jorge.perez@mail.com</div>
+          <div class="pp-meta">
+            <span class="pp-pill" style="background:#F1F5F9;border-color:#E2E8F0;color:#64748B">
+              Sin valoraciones
+            </span>
+            <span class="pp-pill pending">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Verificacion pendiente
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

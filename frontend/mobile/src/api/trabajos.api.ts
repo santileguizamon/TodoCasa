@@ -86,11 +86,12 @@ export function eliminarTrabajo(id: number) {
 
 export function definirFechaAcordada(
   trabajoId: number,
-  fecha: Date
+  fecha: Date,
+  cantidadTurnos = 1
 ) {
   return apiFetch(`/trabajos/${trabajoId}/fecha-acordada`, {
     method: 'PATCH',
-    body: JSON.stringify({ fecha: fecha.toISOString() }),
+    body: JSON.stringify({ fecha: fecha.toISOString(), cantidadTurnos }),
   })
 }
 

@@ -5,11 +5,23 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Redirect, router } from "expo-router";
+import * as AuthSession from "expo-auth-session";
 import { useAuth } from "../../context/auth-context";
 import { register } from "../../auth/auth.service";
 import { authStyles as s } from "../../styles/auth.styles";
+
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+const redirectUri = AuthSession.makeRedirectUri({ scheme: 'mobile' });
+
+const [request, response, promptAsync] = AuthSession.useAuthRequest({
+  clientId: GOOGLE_CLIENT_ID,
+  redirectUri,
+  scopes: ['openid', 'profile', 'email'],
+  responseType: 'id_token',
+  useProxy: true,
+}, { skipCodeExchange: true });
 
 export default function RegisterScreen() {
   const { login: loginContext, user } = useAuth();
@@ -24,11 +36,37 @@ export default function RegisterScreen() {
   const [debugError, setDebugError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  if (user) {
+if (user) {
     if (user.rol === "CLIENTE") {
       return <Redirect href={"/(protected)/cliente" as any} />;
     }
     return <Redirect href={"/(protected)/profesional" as any} />;
+  }
+
+  const { googleLogin } = useAuth();
+
+  const [pendingGoogleRole, setPendingGoogleRole] = useState<'CLIENTE' | 'PROFESIONAL' | null>(null);
+
+  useEffect(() => {
+    if (response?.params?.id_token && pendingGoogleRole) {
+      (async () => {
+        setError("");
+        try {
+          setSubmitting(true);
+          await googleLogin(response.params.id_token, pendingGoogleRole);
+        } catch {
+          setError("Error al iniciar sesion con Google");
+        } finally {
+          setSubmitting(false);
+          setPendingGoogleRole(null);
+        }
+      })();
+    }
+  }, [response?.params?.id_token, pendingGoogleRole]);
+
+  async function handleGoogleLogin(rol: 'CLIENTE' | 'PROFESIONAL') {
+    setPendingGoogleRole(rol);
+    await promptAsync();
   }
 
   async function handleRegister() {
@@ -161,7 +199,7 @@ export default function RegisterScreen() {
           </Text>
         ) : null}
 
-        <TouchableOpacity
+<TouchableOpacity
           onPress={handleRegister}
           disabled={submitting}
           style={[s.submit, submitting ? s.submitDisabled : null]}
@@ -171,6 +209,42 @@ export default function RegisterScreen() {
           ) : (
             <Text style={s.submitText}>Registrarse</Text>
           )}
+        </TouchableOpacity>
+
+        <View style={s.dividerRow}>
+          <View style={s.divider} />
+          <Text style={s.dividerText}>o continua con</Text>
+          <View style={s.divider} />
+        </View>
+
+        <TouchableOpacity
+          onPress={() => promptAsync()}
+          disabled={submitting}
+          style={s.googleBtn}
+        >
+          <Text style={s.googleBtnText}>
+            <span role="img" aria-label="google">🔍</span> Google
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => handleGoogleLogin('CLIENTE')}
+          disabled={submitting}
+          style={s.googleBtn}
+        >
+          <Text style={s.googleBtnText}>
+            <span role="img" aria-label="google">🔍</span> Google (Cliente)
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => handleGoogleLogin('PROFESIONAL')}
+          disabled={submitting}
+          style={s.googleBtn}
+        >
+          <Text style={s.googleBtnText}>
+            <span role="img" aria-label="google">🔍</span> Google (Profesional)
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

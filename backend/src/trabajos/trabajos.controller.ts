@@ -127,14 +127,16 @@ export class TrabajosController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id/fecha-acordada')
   definirFechaAcordada(
-  @Param('id') id: string,
-  @Body('fecha') fecha: string,
-  @Request() req: any,
+    @Param('id') id: string,
+    @Body('fecha') fecha: string,
+    @Body('cantidadTurnos') cantidadTurnos: number,
+    @Request() req: any,
   ) {
     return this.trabajosService.definirFechaAcordada(
-    +id,
-    req.user.id,
-    new Date(fecha),
+      +id,
+      req.user.id,
+      new Date(fecha),
+      cantidadTurnos ?? 1,
     );
   }
 

@@ -63,6 +63,20 @@ export const perfilProfesionalPublicoStyles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 12,
   },
+  heroPillVerified: {
+    backgroundColor: "#DCFCE7",
+    borderColor: "#BBF7D0",
+  },
+  heroPillTextVerified: {
+    color: "#047857",
+  },
+  heroPillPending: {
+    backgroundColor: "#FFF7ED",
+    borderColor: "#FED7AA",
+  },
+  heroPillTextPending: {
+    color: "#B45309",
+  },
   infoCard: {
     backgroundColor: "#F7FAFF",
     borderWidth: 1,

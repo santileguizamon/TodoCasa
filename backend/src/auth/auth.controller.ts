@@ -14,6 +14,11 @@ import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
+class GoogleLoginDto {
+  idToken: string;
+  rol?: 'CLIENTE' | 'PROFESIONAL';
+}
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -36,6 +41,15 @@ export class AuthController {
   async login(@Request() req: any) {
     const user = req.user;
     return this.authService.login(user.id);
+  }
+
+  /**
+   * 🌐 Login con Google (client + professional)
+   */
+  @Post('google')
+  @HttpCode(HttpStatus.OK)
+  async googleLogin(@Body() dto: GoogleLoginDto) {
+    return this.authService.googleLogin(dto.idToken, dto.rol ?? 'CLIENTE');
   }
 
   /**

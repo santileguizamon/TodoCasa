@@ -4,7 +4,7 @@ import { SPACING, RADIUS } from "../theme";
 export const profesionalMisTrabajosStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#EAF2FF",
+    backgroundColor: "#F4EFFF",
     paddingHorizontal: SPACING.lg,
     paddingTop: 30,
   },
@@ -22,8 +22,8 @@ export const profesionalMisTrabajosStyles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   heroCard: {
-    backgroundColor: "#C7DBFF",
-    borderColor: "#AFC9F9",
+    backgroundColor: "#E2D4FF",
+    borderColor: "#D1BCFB",
     borderWidth: 1,
     borderRadius: 16,
     padding: 14,
@@ -32,7 +32,7 @@ export const profesionalMisTrabajosStyles = StyleSheet.create({
   heroKicker: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#27538D",
+    color: "#4C2D87",
     textTransform: "uppercase",
     letterSpacing: 0.6,
   },
@@ -40,11 +40,11 @@ export const profesionalMisTrabajosStyles = StyleSheet.create({
     marginTop: 4,
     fontSize: 22,
     fontWeight: "800",
-    color: "#0F2A52",
+    color: "#2A125E",
   },
   heroSubtitle: {
     marginTop: 6,
-    color: "#365D8F",
+    color: "#5B3D98",
     lineHeight: 19,
   },
   tabsContainer: {
@@ -58,17 +58,17 @@ export const profesionalMisTrabajosStyles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#BED4FA",
-    backgroundColor: "#E9F1FF",
+    borderColor: "#D1BCFB",
+    backgroundColor: "#F3E8FF",
     alignItems: "center",
     justifyContent: "center",
   },
   tabButtonActive: {
-    backgroundColor: "#2563EB",
-    borderColor: "#2563EB",
+    backgroundColor: "#7C3AED",
+    borderColor: "#7C3AED",
   },
   tabButtonText: {
-    color: "#245CB8",
+    color: "#6D28D9",
     fontWeight: "700",
     fontSize: 13,
   },
@@ -76,13 +76,13 @@ export const profesionalMisTrabajosStyles = StyleSheet.create({
     color: "#FFFFFF",
   },
   card: {
-    backgroundColor: "#F7FAFF",
+    backgroundColor: "#FAF7FF",
     padding: SPACING.lg,
     borderRadius: RADIUS.md,
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: "#D6E2F5",
-    shadowColor: "#2563EB",
+    borderColor: "#E9E1F7",
+    shadowColor: "#7C3AED",
     shadowOpacity: 0.12,
     shadowRadius: 12,
     elevation: 4,
@@ -96,12 +96,12 @@ export const profesionalMisTrabajosStyles = StyleSheet.create({
   titulo: {
     fontSize: 16,
     fontWeight: "800",
-    color: "#0F2A52",
+    color: "#2A125E",
     flex: 1,
   },
   cliente: {
     marginTop: 8,
-    color: "#3D628F",
+    color: "#5B3D98",
     fontWeight: "600",
   },
   estadoBadge: {
@@ -120,7 +120,7 @@ export const profesionalMisTrabajosStyles = StyleSheet.create({
     gap: 6,
   },
   metaText: {
-    color: "#486A96",
+    color: "#6B4BAA",
     fontSize: 12,
     fontWeight: "600",
   },
@@ -144,20 +144,20 @@ export const profesionalMisTrabajosStyles = StyleSheet.create({
   emptyContainer: {
     marginTop: 36,
     alignItems: "center",
-    backgroundColor: "#F7FAFF",
+    backgroundColor: "#FAF7FF",
     borderWidth: 1,
-    borderColor: "#D6E2F5",
+    borderColor: "#E9E1F7",
     borderRadius: RADIUS.md,
     padding: SPACING.lg,
   },
   emptyTitle: {
-    color: "#173A6B",
+    color: "#3B0764",
     fontWeight: "800",
     fontSize: 15,
   },
   emptyText: {
     marginTop: 6,
-    color: "#4B6E98",
+    color: "#6B4BAA",
     textAlign: "center",
   },
 });

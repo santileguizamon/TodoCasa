@@ -350,7 +350,7 @@ export default function EditarPerfilProfesional() {
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>Seguridad</Text>
         <View style={styles.securityHintRow}>
-          <Ionicons name="lock-closed-outline" size={14} color="#1D4ED8" />
+          <Ionicons name="lock-closed-outline" size={14} color="#6D28D9" />
           <Text style={styles.securityHint}>Completa ambos campos solo si deseas cambiar la contrasena.</Text>
         </View>
 
