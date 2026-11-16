@@ -3,8 +3,12 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { json, urlencoded } from 'express';
 import { OmitSensitiveInterceptor } from './common/interceptors/omit-sensitive.interceptor';
+import { getJwtRefreshSecret, getJwtSecret } from './auth/jwt.config';
 
 async function bootstrap() {
+  getJwtSecret();
+  getJwtRefreshSecret();
+
   // Inicializa la aplicación NestJS a partir del módulo raíz
   const app = await NestFactory.create(AppModule);
 

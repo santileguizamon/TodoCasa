@@ -8,16 +8,19 @@ import { PrismaModule } from '../database/prisma.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
+import { getJwtSecret } from './jwt.config';
 
 @Module({
   imports: [
     UsersModule,
     PrismaModule, // ✅ Necesario para guardar y verificar el refresh token hash
     PassportModule,
-    JwtModule.register({
-      global: true, // ✅ Permite usar JwtService sin reimportarlo en otros módulos
-      secret: process.env.JWT_SECRET || 'superSecretKey', // ⚠️ Usar variable de entorno
-      signOptions: { expiresIn: '15m' }, // token corto de acceso
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: () => ({
+        secret: getJwtSecret(),
+        signOptions: { expiresIn: '15m' as const },
+      }),
     }),
   ],
   controllers: [AuthController],

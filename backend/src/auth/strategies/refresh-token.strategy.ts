@@ -4,6 +4,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 import { AuthService } from '../auth.service';
 import { JwtPayload } from '../types/jwt-payload.interface';
+import { getJwtRefreshSecret } from '../jwt.config';
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
@@ -18,7 +19,7 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refres
           return token;
         },
       ]),
-      secretOrKey: process.env.JWT_REFRESH_SECRET || 'refreshSecretKey',
+      secretOrKey: getJwtRefreshSecret(),
       passReqToCallback: true,
     });
   }
