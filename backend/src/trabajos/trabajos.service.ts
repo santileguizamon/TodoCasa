@@ -194,8 +194,12 @@ export class TrabajosService {
     return (value * Math.PI) / 180;
   }
 
-  // 📋 Por cliente
-  async obtenerPorCliente(clienteId: number) {
+  // 📋 Por cliente - solo dueño o admin
+  async obtenerPorCliente(clienteId: number, usuarioId: number, rol: Rol) {
+    // Solo el dueño o el admin pueden ver
+    if (rol !== Rol.ADMIN && usuarioId !== clienteId) {
+      throw new ForbiddenException('No tenés permiso para ver estos trabajos');
+    }
     return this.prisma.trabajo.findMany({
       where: { clienteId },
       include: { ofertas: true, valoracion: true },
@@ -216,14 +220,25 @@ export class TrabajosService {
     });
   }
 
-  // 🔎 Uno
-  async obtenerUno(id: number) {
+  // 🔎 Uno - con validación de dueño
+  async obtenerUno(id: number, usuarioId: number, rol: Rol) {
     const trabajo = await this.prisma.trabajo.findUnique({
       where: { id },
       include: { cliente: true, ofertas: true, valoracion: true, chat: true },
     });
     if (!trabajo) throw new NotFoundException('Trabajo no encontrado');
-    return trabajo;
+
+    // Permitir si es dueño, admin, profesional asignado, o profesional en estado PENDIENTE
+    const esDueño = trabajo.clienteId === usuarioId;
+    const esAdmin = rol === Rol.ADMIN;
+    const esProfesionalAsignado = trabajo.chat?.profesionalId === usuarioId;
+    const esProfesionalEnPendiente = rol === Rol.PROFESIONAL && trabajo.estado === EstadoTrabajo.PENDIENTE;
+
+    if (esDueño || esAdmin || esProfesionalAsignado || esProfesionalEnPendiente) {
+      return trabajo;
+    }
+
+    throw new ForbiddenException('No tenés permiso para ver este trabajo');
   }
 
   // ✏️ Actualizar
@@ -334,15 +349,24 @@ export class TrabajosService {
   async clienteConfirmaFinalizacion(trabajoId: number, clienteId: number) {
     const trabajo = await this.prisma.trabajo.findUnique({
       where: { id: trabajoId },
-      include: { ofertas: true },
+      include: { chat: true },
     });
 
     if (!trabajo) throw new NotFoundException('Trabajo no encontrado');
     if (trabajo.clienteId !== clienteId)
       throw new ForbiddenException('No sos el dueño');
 
-    const oferta = trabajo.ofertas[0];
-    if (!oferta) throw new BadRequestException('No hay profesional asignado');
+    if (!trabajo.chat) throw new BadRequestException('No hay profesional asignado');
+
+    // Aceptar solo estados ASIGNADO y PENDIENTE_CONFIRMACION
+    if (
+      trabajo.estado !== EstadoTrabajo.ASIGNADO &&
+      trabajo.estado !== EstadoTrabajo.PENDIENTE_CONFIRMACION
+    ) {
+      throw new BadRequestException(
+        'No se puede finalizar un trabajo en el estado actual',
+      );
+    }
 
     await this.prisma.trabajo.update({
       where: { id: trabajoId },
@@ -353,7 +377,7 @@ export class TrabajosService {
     });
 
     await this.notificacionesService.crear({
-      usuarioId: oferta.profesionalId,
+      usuarioId: trabajo.chat.profesionalId,
       tipo: TipoNotificacion.TRABAJO_FINALIZADO,
       mensaje: `El trabajo "${trabajo.titulo}" fue finalizado.`,
     });
@@ -370,7 +394,7 @@ export class TrabajosService {
         estado: EstadoTrabajo.ASIGNADO,
         fechaAcordada: { lte: limite },
       },
-      include: { ofertas: true },
+      include: { chat: true },
     });
 
     for (const t of trabajos) {
@@ -382,9 +406,9 @@ export class TrabajosService {
         },
       });
 
-      if (t.ofertas[0]) {
+      if (t.chat?.profesionalId) {
         await this.notificacionesService.crear({
-          usuarioId: t.ofertas[0].profesionalId,
+          usuarioId: t.chat.profesionalId,
           tipo: TipoNotificacion.TRABAJO_FINALIZADO,
           mensaje: `El trabajo "${t.titulo}" se finalizó automáticamente.`,
         });
@@ -438,7 +462,7 @@ export class TrabajosService {
   async profesionalMarcaTerminado(trabajoId: number, profesionalId: number) {
   const trabajo = await this.prisma.trabajo.findUnique({
     where: { id: trabajoId },
-    include: { ofertas: true },
+    include: { chat: true },
   });
 
   if (!trabajo) {
@@ -451,12 +475,8 @@ export class TrabajosService {
     );
   }
 
-  // validar que el profesional sea el asignado
-  const ofertaAceptada = trabajo.ofertas.find(
-    (o) => o.profesionalId === profesionalId,
-  );
-
-  if (!ofertaAceptada) {
+  // validar que el profesional sea el asignado usando chat, no ofertas
+  if (trabajo.chat?.profesionalId !== profesionalId) {
     throw new ForbiddenException(
       'No sos el profesional asignado a este trabajo',
     );
@@ -469,6 +489,29 @@ export class TrabajosService {
     },
   });
 }
+
+/** 
+   * Cancela automáticamente trabajos PENDIENTE con expiraEn vencido
+   */
+  async expirarTrabajosUrgentes() {
+    const ahora = new Date();
+    const trabajos = await this.prisma.trabajo.findMany({
+      where: {
+        estado: EstadoTrabajo.PENDIENTE,
+        urgente: true,
+        expiraEn: { lte: ahora },
+      },
+    });
+
+    for (const trabajo of trabajos) {
+      await this.prisma.trabajo.update({
+        where: { id: trabajo.id },
+        data: { estado: EstadoTrabajo.CANCELADO },
+      });
+    }
+
+    return { total: trabajos.length };
+  }
 }
 
 
