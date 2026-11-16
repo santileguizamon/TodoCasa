@@ -12,6 +12,7 @@ import { useAuth } from "../../context/auth-context";
 import { authStyles as s } from "../../styles/auth.styles";
 
 const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; // Reemplazar con el real
+const enableGoogleLogin = process.env.EXPO_PUBLIC_ENABLE_GOOGLE_LOGIN === "true";
 const redirectUri = AuthSession.makeRedirectUri({ scheme: 'mobile' });
 
 const [request, response, promptAsync] = AuthSession.useAuthRequest({
@@ -148,43 +149,59 @@ if (user) {
           )}
         </TouchableOpacity>
 
-        <View style={s.dividerRow}>
-          <View style={s.divider} />
-          <Text style={s.dividerText}>o continua con</Text>
-          <View style={s.divider} />
-        </View>
+        {enableGoogleLogin && (
+  <View style={s.dividerRow}>
+    <View style={s.divider} />
+    <Text style={s.dividerText}>o continua con</Text>
+    <View style={s.divider} />
+  </View>
 
-        <TouchableOpacity
-          onPress={() => promptAsync()}
-          disabled={submitting}
-          style={s.googleBtn}
-        >
-          <Text style={s.googleBtnText}>
-            <span role="img" aria-label="google">🔍</span> Google
-          </Text>
-        </TouchableOpacity>
+  <TouchableOpacity
+    onPress={() => promptAsync()}
+    disabled={submitting}
+    style={s.googleBtn}
+  >
+    <Text style={s.googleBtnText}>
+      <span role="img" aria-label="google">🔍</span> Google
+    </Text>
+  </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => handleGoogleLogin('CLIENTE')}
-          disabled={submitting}
-          style={s.googleBtn}
-        >
-          <Text style={s.googleBtnText}>
-            <span role="img" aria-label="google">🔍</span> Google (Cliente)
-          </Text>
-        </TouchableOpacity>
+  <TouchableOpacity
+    onPress={() => handleGoogleLogin('CLIENTE')}
+    disabled={submitting}
+    style={s.googleBtn}
+  >
+    <Text style={s.googleBtnText}>
+      <span role="img" aria-label="google">🔍</span> Google (Cliente)
+    </Text>
+  </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => handleGoogleLogin('PROFESIONAL')}
-          disabled={submitting}
-          style={s.googleBtn}
-        >
-          <Text style={s.googleBtnText}>
-            <span role="img" aria-label="google">🔍</span> Google (Profesional)
-          </Text>
-        </TouchableOpacity>
+  <TouchableOpacity
+    onPress={() => handleGoogleLogin('PROFESIONAL')}
+    disabled={submitting}
+    style={s.googleBtn}
+  >
+    <Text style={s.googleBtnText}>
+      <span role="img" aria-label="google">🔍</span> Google (Profesional)
+    </Text>
+  </TouchableOpacity>
 
-        <View style={s.secondaryRow}>
+  {enableGoogleLogin ? (
+    <View style={s.dividerRow}>
+      <View style={s.divider} />
+      <Text style={s.dividerText}>o continua con</Text>
+      <View style={s.divider} />
+    </View>
+  ) : null}
+)}
+
+{!enableGoogleLogin && (
+  <View style={s.dividerRow}>
+    <View style={s.divider} />
+    <Text style={s.dividerText}>o continua con</Text>
+    <View style={s.divider} />
+  </View>
+)}
           <Text style={s.secondaryText}>No tenes cuenta? </Text>
           <Link href={"/(public)/register" as any} asChild>
             <TouchableOpacity>
