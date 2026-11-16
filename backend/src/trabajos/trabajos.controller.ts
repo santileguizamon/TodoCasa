@@ -56,14 +56,14 @@ export class TrabajosController {
 
   @UseGuards(JwtAuthGuard)
   @Get('cliente/id/:id')
-  obtenerPorCliente(@Param('id') id: string) {
-    return this.trabajosService.obtenerPorCliente(+id);
+  obtenerPorCliente(@Param('id') id: string, @Req() req) {
+    return this.trabajosService.obtenerPorCliente(+id, req.user.id, req.user.rol);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  obtenerUno(@Param('id') id: string) {
-    return this.trabajosService.obtenerUno(+id);
+  obtenerUno(@Param('id') id: string, @Req() req) {
+    return this.trabajosService.obtenerUno(+id, req.user.id, req.user.rol);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -76,7 +76,8 @@ export class TrabajosController {
     return this.trabajosService.actualizar(+id, req.user.id, dto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Rol.ADMIN)
   @Patch('estado/:id')
   cambiarEstado(@Param('id') id: string, @Body('estado') estado: 'PENDIENTE' | 'ASIGNADO' | 'PENDIENTE_CONFIRMACION' | 'FINALIZADO' | 'CANCELADO' | 'EN_RECLAMO') {
     return this.trabajosService.cambiarEstado(+id, estado);
@@ -114,7 +115,7 @@ export class TrabajosController {
   @Get('cliente/mis-trabajos')
   @Roles(Rol.CLIENTE)
   obtenerMisTrabajosCliente(@Req() req) {
-    return this.trabajosService.obtenerPorCliente(req.user.id);
+    return this.trabajosService.obtenerPorCliente(req.user.id, req.user.id, req.user.rol);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
