@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsIn, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -21,7 +21,8 @@ export class CreateUserDto {
   direccion?: string;
 
   @IsOptional()
-  rol?: string; // CLIENTE | PROFESIONAL (ADMIN solo manualmente)
+  @IsIn(['CLIENTE', 'PROFESIONAL', 'ADMIN'])
+  rol?: 'CLIENTE' | 'PROFESIONAL' | 'ADMIN';
 }
 
 export class UpdateUserDto {

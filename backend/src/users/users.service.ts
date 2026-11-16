@@ -58,8 +58,12 @@ export class UsersService {
 
     return this.prisma.usuario.create({
       data: {
-        ...data,
+        nombre: data.nombre,
+        email: data.email,
         password: hashedPassword,
+        telefono: data.telefono,
+        direccion: data.direccion,
+        rol: data.rol,
         activo: data.activo ?? true,
       },
     });
@@ -74,13 +78,25 @@ export class UsersService {
       throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
     }
 
+    const dataActualizada: {
+      nombre?: string;
+      email?: string;
+      password?: string;
+      telefono?: string;
+      direccion?: string;
+    } = {};
+
+    if (data.nombre !== undefined) dataActualizada.nombre = data.nombre;
+    if (data.email !== undefined) dataActualizada.email = data.email;
     if (data.password) {
-      data.password = await bcrypt.hash(data.password, 10);
+      dataActualizada.password = await bcrypt.hash(data.password, 10);
     }
+    if (data.telefono !== undefined) dataActualizada.telefono = data.telefono;
+    if (data.direccion !== undefined) dataActualizada.direccion = data.direccion;
 
     return this.prisma.usuario.update({
       where: { id },
-      data,
+      data: dataActualizada,
     });
   }
 

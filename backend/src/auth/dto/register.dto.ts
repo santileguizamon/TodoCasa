@@ -1,5 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength, IsEnum } from 'class-validator';
-import { Rol } from '@prisma/client';
+import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength, IsIn } from 'class-validator';
 
 export class RegisterDto {
   @IsString()
@@ -16,6 +15,6 @@ export class RegisterDto {
   @MaxLength(50, { message: 'La contraseña no puede superar los 50 caracteres' })
   password: string;
 
-  @IsEnum(Rol, { message: 'Rol inválido' })
-  rol: Rol;
+  @IsIn(['CLIENTE', 'PROFESIONAL'], { message: 'Rol inválido' })
+  rol: 'CLIENTE' | 'PROFESIONAL';
 }

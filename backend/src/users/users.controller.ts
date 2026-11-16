@@ -63,8 +63,10 @@ import {
     }
   
     /**
-     * 📌 Crear usuario (registro libre)
+     * 📌 Crear usuario (solo ADMIN). El registro público va por POST /auth/register.
      */
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Rol.ADMIN)
     @Post()
     async create(@Body() createUserDto: CreateUserDto) {
       return this.usersService.create(createUserDto);

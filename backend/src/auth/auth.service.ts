@@ -31,6 +31,10 @@ export class AuthService {
     password: string,
     rol: string = 'CLIENTE',
   ) {
+    if (rol !== 'CLIENTE' && rol !== 'PROFESIONAL') {
+      throw new ForbiddenException('No se puede registrar este rol');
+    }
+
     const existe = await this.prisma.usuario.findUnique({
       where: { email },
     });
