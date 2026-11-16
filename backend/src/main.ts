@@ -17,8 +17,9 @@ async function bootstrap() {
   app.use(urlencoded({ extended: true, limit: '10mb' }));
 
   // Activar CORS (importante para conectar con el frontend)
+  const corsOrigins = process.env.CORS_ORIGINS || '*';
   app.enableCors({
-    origin: '*', // Podés restringirlo a tu frontend en producción
+    origin: corsOrigins,
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
