@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '../database/prisma.service';
 import { CrearOfertaDto } from './dto/crear-oferta.dto';
 import { TipoNotificacion } from '@prisma/client';
+import { Rol } from '@/common/enums';
 import { NotificacionesService } from '../notificaciones/notificaciones.service';
 
 @Injectable()
@@ -74,9 +75,20 @@ export class OfertasService {
   }
 
   /**
-   * 📋 Obtener todas las ofertas de un trabajo
+   * 📋 Obtener ofertas de un trabajo - solo dueño o admin
    */
-  async obtenerPorTrabajo(trabajoId: number) {
+  async obtenerPorTrabajo(trabajoId: number, usuarioId: number, rol: Rol) {
+    // Solo el dueño o el admin pueden ver ofertas
+    if (rol !== Rol.ADMIN) {
+      const trabajo = await this.prisma.trabajo.findUnique({
+        where: { id: trabajoId },
+      });
+      if (!trabajo) throw new NotFoundException('Trabajo no encontrado');
+      if (trabajo.clienteId !== usuarioId) {
+        throw new ForbiddenException('No tenés permiso para ver ofertas de este trabajo');
+      }
+    }
+
     return this.prisma.oferta.findMany({
       where: { trabajoId },
       include: { profesional: true },
