@@ -22,5 +22,18 @@ export class TrabajosCron {
       `Cron ejecutado: ${result.total} trabajos auto-finalizados`,
     );
   }
+
+  /** 
+   * ⏰ Se ejecuta cada hora
+   * Cancela automáticamente trabajos PENDIENTE cuya hora de expiración haya pasado
+   */
+  @Cron(CronExpression.EVERY_HOUR)
+  async expirarTrabajosUrgentes() {
+    const result = await this.trabajosService.expirarTrabajosUrgentes();
+
+    this.logger.log(
+      `Cron ejecutado: ${result.total} trabajos urgentes expirados`,
+    );
+  }
 }
 
