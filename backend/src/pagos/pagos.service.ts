@@ -43,12 +43,14 @@ export class PagosService {
     }
 
     let titulo = '';
-    let monto = dto.monto;
+    let monto: number;
 
     if (dto.tipo === 'SUSCRIPCION') {
       titulo = 'Suscripción mensual';
+      monto = Number(process.env.SUSCRIPCION_PRECIO_ARS) || 11000;
     } else if (dto.tipo === 'VERIFICACION') {
       titulo = 'Verificación profesional';
+      monto = Number(process.env.VERIFICACION_PRECIO_ARS) || 5000;
     } else {
       throw new BadRequestException('Tipo de pago inválido');
     }
@@ -152,6 +154,18 @@ export class PagosService {
       throw new NotFoundException('Pago no encontrado');
     }
 
+    // Validar que el importe pagado sea >= el importe registrado
+    if (payment.transaction_amount < pago.monto) {
+      await this.prisma.pago.update({
+        where: { id: pago.id },
+        data: { estado: 'FALLIDO' },
+      });
+      this.logger.warn(
+        `Webhook idempotencia fallida: payment.transaction_amount ${payment.transaction_amount} < pago.monto ${pago.monto}`,
+      );
+      return;
+    }
+
     let nuevoEstado: 'PENDIENTE' | 'COMPLETADO' | 'FALLIDO' = 'PENDIENTE';
 
     if (status === 'approved') nuevoEstado = 'COMPLETADO';
@@ -163,6 +177,9 @@ export class PagosService {
     });
 
     if (nuevoEstado !== 'COMPLETADO') return;
+
+    // Hacer webhook idempotente: si ya estaba COMPLETADO, no re-ejecutar efectos
+    if (pago.estado === 'COMPLETADO') return;
 
      await this.aplicarEfectosPagoAprobado(pago);
 
