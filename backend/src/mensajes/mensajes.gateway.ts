@@ -11,6 +11,7 @@ import {
   import { Server, Socket } from 'socket.io';
   import { MensajesService } from './mensajes.service';
   import { CreateMensajeDto } from './dto/create-mensaje.dto';
+import { omitSensitiveFields } from '../common/interceptors/omit-sensitive.interceptor';
   
   @WebSocketGateway({
     cors: {
@@ -81,20 +82,22 @@ import {
   
       try {
         // Crear mensaje usando tu servicio real
-        const mensaje = await this.mensajesService.enviarMensaje({
-          ...dto,
-          remitenteId,
-        });
-  
+        const mensaje = omitSensitiveFields(
+          await this.mensajesService.enviarMensaje({
+            ...dto,
+            remitenteId,
+          }),
+        );
+
         // Emitir al destinatario si está conectado
         const destinatarioSocketId = this.usuariosConectados.get(dto.destinatarioId);
         if (destinatarioSocketId) {
           this.server.to(destinatarioSocketId).emit('mensaje_recibido', mensaje);
         }
-  
+
         // Confirmar al remitente
         this.server.to(socket.id).emit('mensaje_enviado', mensaje);
-  
+
         return mensaje;
       } catch (error) {
         console.error('❌ Error al enviar mensaje:', error.message);

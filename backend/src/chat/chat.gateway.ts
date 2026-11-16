@@ -7,6 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ChatService } from './chat.service';
+import { omitSensitiveFields } from '../common/interceptors/omit-sensitive.interceptor';
 
 @WebSocketGateway({
   cors: { origin: '*' },
@@ -31,10 +32,12 @@ export class ChatGateway {
     @ConnectedSocket() client: Socket,
   ) {
     try {
-      const mensaje = await this.chatService.enviarMensaje(
-        data.chatId,
-        data.remitenteId,
-        data.contenido,
+      const mensaje = omitSensitiveFields(
+        await this.chatService.enviarMensaje(
+          data.chatId,
+          data.remitenteId,
+          data.contenido,
+        ),
       );
 
       // Emitir a todos en la sala del chat

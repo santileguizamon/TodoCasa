@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { json, urlencoded } from 'express';
+import { OmitSensitiveInterceptor } from './common/interceptors/omit-sensitive.interceptor';
 
 async function bootstrap() {
   // Inicializa la aplicación NestJS a partir del módulo raíz
@@ -17,6 +18,8 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
+
+  app.useGlobalInterceptors(new OmitSensitiveInterceptor());
 
   // Pipe global de validación: aplica las validaciones de DTOs automáticamente
   app.useGlobalPipes(
