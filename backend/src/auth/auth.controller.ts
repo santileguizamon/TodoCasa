@@ -44,15 +44,6 @@ export class AuthController {
   }
 
   /**
-   * 🌐 Login con Google (client + professional)
-   */
-  @Post('google')
-  @HttpCode(HttpStatus.OK)
-  async googleLogin(@Body() dto: GoogleLoginDto) {
-    return this.authService.googleLogin(dto.idToken, dto.rol ?? 'CLIENTE');
-  }
-
-  /**
    * 🔄 Refrescar tokens de sesión
    */
   @Post('refresh')
