@@ -435,6 +435,12 @@ export class TrabajosService {
     if (usuario.rol !== Rol.ADMIN && trabajo.clienteId !== usuarioId)
       throw new ForbiddenException('No puedes cancelar este trabajo');
 
+    if (
+      trabajo.estado === EstadoTrabajo.FINALIZADO ||
+      trabajo.estado === EstadoTrabajo.CANCELADO
+    )
+      throw new BadRequestException('No se puede cancelar un trabajo finalizado o ya cancelado');
+
     return this.prisma.trabajo.update({
       where: { id: trabajoId },
       data: { estado: EstadoTrabajo.CANCELADO },

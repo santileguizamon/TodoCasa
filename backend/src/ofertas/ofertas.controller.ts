@@ -45,8 +45,15 @@ export class OfertasController {
    */
   @UseGuards(JwtAuthGuard)
   @Get('trabajo/:id')
-  obtenerPorTrabajo(@Param('id', ParseIntPipe) trabajoId: number) {
-    return this.ofertasService.obtenerPorTrabajo(trabajoId);
+  obtenerPorTrabajo(
+    @Param('id', ParseIntPipe) trabajoId: number,
+    @Req() req,
+  ) {
+    return this.ofertasService.obtenerPorTrabajo(
+      trabajoId,
+      req.user.id,
+      req.user.rol,
+    );
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

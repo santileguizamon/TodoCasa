@@ -50,7 +50,9 @@ export class PagosService {
       monto = Number(process.env.SUSCRIPCION_PRECIO_ARS) || 11000;
     } else if (dto.tipo === 'VERIFICACION') {
       titulo = 'Verificación profesional';
-      monto = Number(process.env.VERIFICACION_PRECIO_ARS) || 5000;
+      monto = Number(process.env.VERIFICACION_PRECIO_ARS);
+      if (!monto || monto <= 0)
+        throw new BadRequestException('Precio de verificación no configurado');
     } else {
       throw new BadRequestException('Tipo de pago inválido');
     }
@@ -161,7 +163,7 @@ export class PagosService {
         data: { estado: 'FALLIDO' },
       });
       this.logger.warn(
-        `Webhook idempotencia fallida: payment.transaction_amount ${payment.transaction_amount} < pago.monto ${pago.monto}`,
+        `Webhook: el importe pagado (${payment.transaction_amount}) es menor al registrado (${pago.monto})`,
       );
       return;
     }

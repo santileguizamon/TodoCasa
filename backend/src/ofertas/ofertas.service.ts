@@ -59,6 +59,8 @@ export class OfertasService {
     if (!trabajo) throw new NotFoundException('Trabajo no encontrado');
     if (trabajo.estado !== 'PENDIENTE')
       throw new ForbiddenException('No se puede ofertar sobre un trabajo asignado o cerrado');
+    if (trabajo.expiraEn && trabajo.expiraEn < new Date())
+      throw new BadRequestException('El trabajo expiró');
     if (dto.monto < trabajo.rangoMin || dto.monto > trabajo.rangoMax) {
       throw new BadRequestException(
         `El monto debe estar entre ${trabajo.rangoMin} y ${trabajo.rangoMax}`,
