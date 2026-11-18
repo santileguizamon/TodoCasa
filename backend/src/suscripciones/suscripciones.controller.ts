@@ -4,27 +4,35 @@ import { CrearSuscripcionDto } from './dto/crear-suscripcion.dto';
 import { ActualizarSuscripcionDto } from './dto/actualizar-suscripcion.dto';
 import { UseGuards, Req } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Rol } from '../common/enums';
 import { PrismaService } from '@/database/prisma.service';
 
-
+// Las suscripciones las crean el webhook de pagos o la confirmación manual
+// del administrador. Fuera de "mi-suscripcion", todas las rutas son de ADMIN.
 @Controller('suscripciones')
+@UseGuards(JwtAuthGuard)
 export class SuscripcionesController {
   constructor(
     private readonly suscripcionesService: SuscripcionesService,
     private readonly prisma: PrismaService,
   ) {}
 
+  @UseGuards(RolesGuard)
+  @Roles(Rol.ADMIN)
   @Post()
   crear(@Body() dto: CrearSuscripcionDto) {
     return this.suscripcionesService.crear(dto);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Rol.ADMIN)
   @Get()
   obtenerTodas() {
     return this.suscripcionesService.obtenerTodas();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('mi-suscripcion')
   async miSuscripcion(@Req() req) {
     return this.prisma.suscripcion.findUnique({
@@ -32,20 +40,24 @@ export class SuscripcionesController {
     });
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Rol.ADMIN)
   @Get(':id')
   obtenerUna(@Param('id') id: string) {
     return this.suscripcionesService.obtenerUna(+id);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Rol.ADMIN)
   @Patch(':id')
   actualizar(@Param('id') id: string, @Body() dto: ActualizarSuscripcionDto) {
     return this.suscripcionesService.actualizar(+id, dto);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Rol.ADMIN)
   @Delete(':id')
   cancelar(@Param('id') id: string) {
     return this.suscripcionesService.cancelar(+id);
   }
-
-  
 }
