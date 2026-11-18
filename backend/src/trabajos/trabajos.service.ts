@@ -233,8 +233,19 @@ export class TrabajosService {
     const esAdmin = rol === Rol.ADMIN;
     const esProfesionalAsignado = trabajo.chat?.profesionalId === usuarioId;
     const esProfesionalEnPendiente = rol === Rol.PROFESIONAL && trabajo.estado === EstadoTrabajo.PENDIENTE;
+    // El profesional que ofertó puede seguir viendo el trabajo aunque se haya
+    // adjudicado a otro (aparece en su listado de "Mis trabajos").
+    const esProfesionalConOferta =
+      rol === Rol.PROFESIONAL &&
+      trabajo.ofertas.some((o) => o.profesionalId === usuarioId);
 
-    if (esDueño || esAdmin || esProfesionalAsignado || esProfesionalEnPendiente) {
+    if (
+      esDueño ||
+      esAdmin ||
+      esProfesionalAsignado ||
+      esProfesionalEnPendiente ||
+      esProfesionalConOferta
+    ) {
       return trabajo;
     }
 
