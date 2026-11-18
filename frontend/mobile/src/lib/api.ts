@@ -18,7 +18,7 @@ function headersToRecord(headers?: HeadersInit): Record<string, string> {
   return headers as Record<string, string>
 }
 
-async function refreshAccessToken(): Promise<string | null> {
+export async function refreshAccessToken(): Promise<string | null> {
   if (refreshPromise) return refreshPromise
 
   refreshPromise = (async () => {

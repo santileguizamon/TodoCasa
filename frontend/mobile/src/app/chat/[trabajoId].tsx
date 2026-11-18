@@ -96,9 +96,13 @@ const [fechaSeleccionada, setFechaSeleccionada] = useState<Date>(new Date())
 
     socketRef.current = socket
 
-    socketRef.current.emit('unirseChat', {
-      chatId: chat.id,
-    })
+    const unirse = () =>
+      socketRef.current?.emit('unirseChat', {
+        chatId: chat.id,
+      })
+    unirse()
+    // Al reconectar (por ejemplo, tras renovar el token) se vuelve a unir a la sala.
+    socketRef.current.on('connect', unirse)
 
     socketRef.current.on('nuevoMensaje', (mensaje: any) => {
       setMensajes((prev) => [...prev, mensaje])
@@ -110,6 +114,7 @@ const [fechaSeleccionada, setFechaSeleccionada] = useState<Date>(new Date())
 
     return () => {
       socketRef.current?.off('nuevoMensaje')
+      socketRef.current?.off('connect', unirse)
     }
   }, [chat?.id])
 
@@ -120,7 +125,6 @@ const [fechaSeleccionada, setFechaSeleccionada] = useState<Date>(new Date())
       setSending(true)
       socketRef.current.emit('enviarMensaje', {
         chatId: chat.id,
-        remitenteId: user?.id,
         contenido: texto.trim(),
       })
 

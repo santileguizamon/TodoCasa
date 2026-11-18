@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store'
 import { AuthResponse } from '../auth/auth-types'
 import { login as loginService, googleLogin as googleLoginService } from '../auth/auth.service'
 import { apiFetch } from '../lib/api'
+import { conectarSocket, desconectarSocket } from '../lib/socket'
 
 interface AuthContextType {
   user: AuthResponse['user'] | null
@@ -35,16 +36,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })()
   }, [])
 
+  // El chat en tiempo real se conecta con el token de la sesión.
+  useEffect(() => {
+    if (token) conectarSocket()
+    else desconectarSocket()
+  }, [token])
+
 async function login(email: string, password: string) {
     try {
       const res = await loginService(email, password)
-   
-      setToken(res.access_token)
-      setUser(res.user)
-   
+
+      // Se guarda primero el token: el socket del chat lo lee al conectar.
       await SecureStore.setItemAsync('token', res.access_token)
       await SecureStore.setItemAsync('refresh_token', res.refresh_token)
       await SecureStore.setItemAsync('user', JSON.stringify(res.user))
+
+      setToken(res.access_token)
+      setUser(res.user)
       return res
     } catch (error) {
       console.error('Login error', error)
@@ -56,12 +64,13 @@ async function login(email: string, password: string) {
     try {
       const res = await googleLoginService(idToken, rol)
 
-      setToken(res.access_token)
-      setUser(res.user)
-
+      // Se guarda primero el token: el socket del chat lo lee al conectar.
       await SecureStore.setItemAsync('token', res.access_token)
       await SecureStore.setItemAsync('refresh_token', res.refresh_token)
       await SecureStore.setItemAsync('user', JSON.stringify(res.user))
+
+      setToken(res.access_token)
+      setUser(res.user)
       return res
     } catch (error) {
       console.error('Google login error', error)

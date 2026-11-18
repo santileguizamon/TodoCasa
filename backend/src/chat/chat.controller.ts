@@ -53,7 +53,11 @@ export class ChatController {
   }
 
   @Get(':chatId/mensajes')
-  obtenerMensajes(@Param('chatId', ParseIntPipe) chatId: number) {
+  async obtenerMensajes(
+    @Param('chatId', ParseIntPipe) chatId: number,
+    @Req() req,
+  ) {
+    await this.chatService.verificarParticipante(chatId, req.user.id, req.user.rol);
     return this.chatService.obtenerMensajes(chatId);
   }
 

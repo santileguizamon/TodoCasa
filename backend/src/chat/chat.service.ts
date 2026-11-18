@@ -102,6 +102,20 @@ export class ChatService {
     return mensaje;
   }
 
+  // Solo el cliente o el profesional del chat (o un ADMIN) pueden leerlo.
+  async verificarParticipante(chatId: number, userId: number, rol?: string) {
+    const chat = await this.prisma.chat.findUnique({ where: { id: chatId } });
+    if (!chat) throw new NotFoundException('Chat no encontrado');
+    if (
+      rol !== 'ADMIN' &&
+      chat.clienteId !== userId &&
+      chat.profesionalId !== userId
+    ) {
+      throw new ForbiddenException('No puedes ver este chat');
+    }
+    return chat;
+  }
+
   async obtenerMensajes(chatId: number) {
     return this.prisma.mensaje.findMany({
       where: { chatId },
