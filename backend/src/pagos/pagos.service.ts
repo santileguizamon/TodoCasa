@@ -156,8 +156,12 @@ export class PagosService {
       throw new NotFoundException('Pago no encontrado');
     }
 
+    // Idempotencia: si el pago ya estaba COMPLETADO no se vuelve a procesar
+    // (ni se re-aplican efectos ni se cambia su estado).
+    if (pago.estado === 'COMPLETADO') return;
+
     // Validar que el importe pagado sea >= el importe registrado
-    if (payment.transaction_amount < pago.monto) {
+    if (Number(payment.transaction_amount) < pago.monto) {
       await this.prisma.pago.update({
         where: { id: pago.id },
         data: { estado: 'FALLIDO' },
@@ -173,19 +177,24 @@ export class PagosService {
     if (status === 'approved') nuevoEstado = 'COMPLETADO';
     if (status === 'rejected' || status === 'cancelled') nuevoEstado = 'FALLIDO';
 
-    await this.prisma.pago.update({
-      where: { id: pago.id },
-      data: { estado: nuevoEstado },
+    if (nuevoEstado !== 'COMPLETADO') {
+      await this.prisma.pago.update({
+        where: { id: pago.id },
+        data: { estado: nuevoEstado },
+      });
+      return;
+    }
+
+    // Marcar COMPLETADO de forma atómica: solo el primer webhook que logra
+    // el cambio aplica los efectos (evita extender la suscripción dos veces
+    // si Mercado Pago envía notificaciones repetidas o simultáneas).
+    const { count } = await this.prisma.pago.updateMany({
+      where: { id: pago.id, estado: { not: 'COMPLETADO' } },
+      data: { estado: 'COMPLETADO' },
     });
+    if (count === 0) return;
 
-    if (nuevoEstado !== 'COMPLETADO') return;
-
-    // Hacer webhook idempotente: si ya estaba COMPLETADO, no re-ejecutar efectos
-    if (pago.estado === 'COMPLETADO') return;
-
-     await this.aplicarEfectosPagoAprobado(pago);
-
-    
+    await this.aplicarEfectosPagoAprobado(pago);
   }
 
   /**
