@@ -1,8 +1,10 @@
-import { IsInt, IsString, MinLength } from 'class-validator';
+import { IsInt, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class CreateMensajeDto {
+  // Se ignora: el remitente siempre es el usuario autenticado.
+  @IsOptional()
   @IsInt()
-  remitenteId: number;
+  remitenteId?: number;
 
   @IsInt()
   destinatarioId: number;
